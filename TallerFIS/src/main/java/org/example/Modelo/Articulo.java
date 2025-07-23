@@ -3,6 +3,7 @@ package org.example.Modelo;
 import java.util.List;
 import java.util.Map;
 
+
 public class Articulo {
     private String codigo;
     private String nombre;
@@ -11,7 +12,6 @@ public class Articulo {
     private Map<String, Integer> cantidadEnExistenciaPorPlanta;
     private Map<String, Integer> stockMinimoPorPlanta;
 
-    // Getters y Setters
     public String getCodigo() { return codigo; }
     public void setCodigo(String codigo) { this.codigo = codigo; }
 

@@ -5,7 +5,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.lang.Integer;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -46,7 +45,7 @@ public class ClienteVerArticulos extends JFrame {
 
         tabla = new JTable(model);
         tabla.getColumn("Acción").setCellRenderer(new ButtonRenderer());
-        tabla.getColumn("Acción").setCellEditor(new ButtonEditor(new JCheckBox(), controller));
+        tabla.getColumn("Acción").setCellEditor(new ButtonEditor(new JCheckBox(), controller, "verArticulo"));
 
         JScrollPane scrollPane = new JScrollPane(tabla);
         add(scrollPane, BorderLayout.CENTER); // tabla al centro

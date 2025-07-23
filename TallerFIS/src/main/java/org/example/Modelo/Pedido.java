@@ -4,12 +4,17 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Pedido {
+    private String codigo;
     private Cliente cliente;
     private String direccionEnvio;
     private LocalDate fechaPedido;
     private List<LineaPedido> lineasPedido;
 
     // Getters y Setters
+
+    public String getCodigo() {return codigo;}
+    public void setCodigo(String codigo) {this.codigo = codigo;}
+
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
 

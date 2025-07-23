@@ -1,6 +1,7 @@
 package org.example.VIsta;
 
 import org.example.Controlador.ClienteController;
+import org.example.Controlador.DirectorController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,13 +15,13 @@ import java.util.ArrayList;
 
 public class VerPedidos extends JFrame {
 
-    private ClienteController controller;
+    private DirectorController directorController;
     private JTable tabla;
     private DefaultTableModel model;
     public JButton enviarBoton;
 
-    public VerPedidos(ClienteController controllerC) {
-        this.controller = controllerC;
+    public VerPedidos(DirectorController controllerD) {
+        this.directorController= controllerD;
 
         setTitle("Inventario de Artículos");
         setSize(700, 400);
@@ -29,7 +30,7 @@ public class VerPedidos extends JFrame {
         setLayout(new BorderLayout());
 
         enviarBoton = new JButton("Enviar");
-        enviarBoton.addActionListener(controller);
+        enviarBoton.addActionListener(directorController);
 
         String[] columnas = {"ID", "Nombre Cliente", "Direccion", "Fecha", "Acción"};
 
@@ -47,7 +48,7 @@ public class VerPedidos extends JFrame {
 
         tabla = new JTable(model);
         tabla.getColumn("Acción").setCellRenderer(new ButtonRenderer());
-        tabla.getColumn("Acción").setCellEditor(new ButtonEditor(new JCheckBox(), controller));
+        tabla.getColumn("Acción").setCellEditor(new ButtonEditor(new JCheckBox(), directorController,"verPedido"));
 
         JScrollPane scrollPane = new JScrollPane(tabla);
         add(scrollPane, BorderLayout.CENTER);
@@ -60,7 +61,7 @@ public class VerPedidos extends JFrame {
     }
 
     public void agregarFila(String id, String nombre, String direccion, String fecha) {
-        model.addRow(new Object[]{id, nombre, direccion, fecha, "Ver artículo"});
+        model.addRow(new Object[]{id, nombre, direccion, fecha, "Ver pedido"});
     }
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
@@ -72,7 +73,7 @@ public class VerPedidos extends JFrame {
         public Component getTableCellRendererComponent(JTable table, Object value,
                                                        boolean isSelected, boolean hasFocus,
                                                        int row, int column) {
-            setText((value == null) ? "Ver artículo" : value.toString());
+            setText((value == null) ? "Ver pedido" : value.toString());
             return this;
         }
     }

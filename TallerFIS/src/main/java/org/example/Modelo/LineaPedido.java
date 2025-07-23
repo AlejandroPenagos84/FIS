@@ -12,6 +12,8 @@ public class LineaPedido {
         this.cantidadPendiente = cantidadPendiente;
     }
 
+
+
     // Getters y Setters
     public Articulo getArticulo() { return articulo; }
     public void setArticulo(Articulo articulo) { this.articulo = articulo; }

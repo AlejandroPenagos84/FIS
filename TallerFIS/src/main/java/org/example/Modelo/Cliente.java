@@ -11,6 +11,17 @@ public class Cliente {
     private double limiteCredito;
     private double porcentajeDescuento;
 
+
+    public Cliente(String codigo,String nombre, List<String> direccionesEnvio, double saldo, double limiteCredito, double porcentajeDescuento) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.direccionesEnvio = direccionesEnvio;
+        this.codigo = codigo;
+        this.saldo = saldo;
+        this.limiteCredito = limiteCredito;
+        this.porcentajeDescuento = porcentajeDescuento;
+    }
+
     // Métodos
     public void realizarPedido() {
         // Lógica para realizar pedido

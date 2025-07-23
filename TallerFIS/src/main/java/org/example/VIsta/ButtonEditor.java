@@ -11,17 +11,17 @@ public class ButtonEditor extends DefaultCellEditor {
     private boolean clicked;
     private int row;
 
-    public ButtonEditor(JCheckBox checkBox, ActionListener listener) {
+    public ButtonEditor(JCheckBox checkBox, ActionListener listener, String actionValue) {
         super(checkBox);
         button = new JButton();
         button.setOpaque(true);
         button.addActionListener(e -> {
             if (clicked) {
-                // Creamos un nuevo evento y se lo pasamos al controlador
                 ActionEvent nuevoEvento = new ActionEvent(
                         e.getSource(),
+
                         ActionEvent.ACTION_PERFORMED,
-                        "verArticulo:" + row
+                        actionValue+":" + row
                 );
                 listener.actionPerformed(nuevoEvento);
             }
@@ -33,7 +33,7 @@ public class ButtonEditor extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value,
                                                  boolean isSelected, int row, int column) {
-        this.label = (value == null) ? "Ver artículo" : value.toString();
+        this.label = (value == null) ? "value" : value.toString();
         button.setText(label);
         this.clicked = true;
         this.row = row;
