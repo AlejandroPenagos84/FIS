@@ -290,8 +290,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Si el token es válido, hacer la petición
     authenticatedFetch(API + 'users/')
         .then(response => {
+            console.log(localStorage.getItem('token'));
+            // Si la respuesta no es OK, lanza un error
             if (!response.ok) {
+                console.log("Error")
                 throw new Error(`HTTP error! status: ${response.status}`);
+                
             }
             return response.json();
         })

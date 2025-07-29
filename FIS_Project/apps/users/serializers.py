@@ -5,7 +5,7 @@ class UsersSerializerModel(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "email", "password"]
+        fields = ["id", "username", "first_name", "last_name", "email", "password","rol"]
     def create(self, validated_data):
         password = validated_data.pop("password", None)
         user = User(**validated_data)

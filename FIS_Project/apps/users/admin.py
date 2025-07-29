@@ -3,7 +3,7 @@ from .models import User
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'rol')
     search_fields = ('username', 'email')
 
 admin.site.register(User, UserAdmin)

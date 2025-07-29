@@ -4,19 +4,17 @@ from django.contrib.auth.models import AbstractUser, UserManager
 # Create your models here.
 class User(AbstractUser):
     ROL_CHOICES = [
-        ('administrador', 'Administrador'),
-        ('ingeniero', 'Ingeniero'),
-        ('supervisor_cliente', 'Supervisor Cliente'),
-        ('tecnico', 'Técnico'),
+        ('Administrador', 'Administrador'),
+        ('Ingeniero', 'Ingeniero'),
+        ('Supervisor_Cliente', 'Supervisor Cliente'),
+        ('Tecnico', 'Técnico'),
     ]
     
     REQUIRED_FIELDS = ["email"]
     
     # Campos del diagrama
-    nombre_usuario = models.CharField(max_length=100, unique=True, blank=True, null=True)
+    username = models.CharField(max_length=100, unique=True, blank=True, null=True)
     email = models.EmailField(unique=True)
-    primer_nombre = models.CharField(max_length=50, blank=True, null=True)
-    primer_apellido = models.CharField(max_length=50, blank=True, null=True)
     rol = models.CharField(max_length=30, choices=ROL_CHOICES, default='tecnico')
     
     # Mantener compatibilidad con campos de Django
@@ -42,21 +40,21 @@ class User(AbstractUser):
         return self.rol == 'tecnico'
 
     def save(self, *args, **kwargs):
-        # Si no se especifica nombre_usuario, usar el username
-        if not self.nombre_usuario:
-            self.nombre_usuario = self.username
+        # Si no se especifica username, usar el username
+        if not self.username:
+            self.username = self.username
         
         # Sincronizar nombres
-        if self.primer_nombre and not self.first_name:
-            self.first_name = self.primer_nombre
-        if self.primer_apellido and not self.last_name:
-            self.last_name = self.primer_apellido
-            
+        if not self.first_name:
+            self.first_name = self.first_name
+        if not self.last_name:
+            self.last_name = self.last_name
+
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        if self.primer_nombre and self.primer_apellido:
-            return f"{self.primer_nombre} {self.primer_apellido}"
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
         return self.username
 
     class Meta:
