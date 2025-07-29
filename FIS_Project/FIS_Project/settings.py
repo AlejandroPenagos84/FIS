@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.users',  # Custom users app - moved up
     'apps.clients',  # Custom clients app - moved up
+    'apps.equipment',  # Equipment management app
+    'apps.maintenance',  # Maintenance management app
     'rest_framework',  # Django REST Framework
     "corsheaders",
     "rest_framework_simplejwt"
