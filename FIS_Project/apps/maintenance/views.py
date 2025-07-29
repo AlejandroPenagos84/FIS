@@ -38,6 +38,17 @@ class MantenimientoViewSet(ModelViewSet):
         return queryset
     
     @action(detail=True, methods=['post'])
+    def programar(self, request, pk=None):
+        """Programar mantenimiento"""
+        mantenimiento = self.get_object()
+        # fecha = request.data.get('fecha')
+        # if not fecha:
+        #     return Response({'error': 'Fecha requerida'}, status=status.HTTP_400_BAD_REQUEST)
+        # mantenimiento.fecha_programada = timezone.now()  # Asignar fecha actual como ejemplo
+        mantenimiento.programar()
+        return Response({'status': 'Mantenimiento programado'})
+    
+    @action(detail=True, methods=['post'])
     def iniciar(self, request, pk=None):
         """Iniciar mantenimiento"""
         mantenimiento = self.get_object()
@@ -65,7 +76,7 @@ class OrdenTrabajoViewSet(ModelViewSet):
     """
     queryset = OrdenTrabajo.objects.all()
     serializer_class = OrdenTrabajoSerializer
-    permission_classes = [IsAdministradorOrIngeniero]
+    # permission_classes = [IsAdministradorOrIngeniero]
     
     @action(detail=True, methods=['post'])
     def asignar(self, request, pk=None):

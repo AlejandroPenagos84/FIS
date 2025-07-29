@@ -30,11 +30,11 @@ class ClientViewSet(ModelViewSet):
             )
         return queryset
     
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        client = serializer.save()
-        return Response(self.get_serializer(client).data, status=status.HTTP_201_CREATED)
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     client = serializer.save()
+    #     return Response(self.get_serializer(client).data, status=status.HTTP_201_CREATED)
 
 
 class SedeViewSet(ModelViewSet):
@@ -52,3 +52,12 @@ class SedeViewSet(ModelViewSet):
         if search:
             queryset = queryset.filter(name__icontains=search)
         return queryset
+
+    def areas_servicio(self, request, pk=None):
+        """
+        Obtiene las áreas de servicio de una sede específica
+        """
+        sede = self.get_object()
+        areas_servicio = sede.areas_servicio()
+        serializer = AreaServicioSerializer(areas_servicio, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

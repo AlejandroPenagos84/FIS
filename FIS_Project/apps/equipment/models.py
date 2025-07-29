@@ -30,13 +30,13 @@ class TipoEquipo(models.Model):
 
 class Equipo(models.Model):
     ESTADO_CHOICES = [
-        ('activo', 'Activo'),
-        ('mantenimiento', 'En Mantenimiento'),
-        ('fuera_servicio', 'Fuera de Servicio'),
+        ('Funcional', 'Funcional'),
+        ('En Mantenimiento', 'En Mantenimiento'),
+        ('Fuera de Servicio', 'Fuera de Servicio'),
     ]
     
     numero_serie = models.CharField(max_length=100, unique=True)
-    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='activo')
+    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='Funcional')
     marca = models.CharField(max_length=100)
     modelo = models.CharField(max_length=100)
     tipo_equipo = models.ForeignKey(TipoEquipo, on_delete=models.CASCADE, related_name='equipos', null=True, blank=True)
@@ -45,23 +45,23 @@ class Equipo(models.Model):
 
     def marcar_mantenimiento(self):
         """Marca el equipo como en mantenimiento"""
-        self.estado = 'mantenimiento'
+        self.estado = 'En_Mantenimiento'
         self.save()
 
     def marcar_fuera_servicio(self):
         """Marca el equipo como fuera de servicio"""
-        self.estado = 'fuera_servicio'
+        self.estado = 'Fuera_de_Servicio'
         self.save()
 
     def marcar_activo(self):
         """Marca el equipo como activo"""
-        self.estado = 'activo'
+        self.estado = 'Funcional'
         self.save()
 
     def historial_mantenimientos(self):
-        """Retorna el historial de mantenimientos del equipo"""
-        # Esto se implementará cuando creemos la app maintenance
-        pass
+        "Retorna el historial de mantenimientos del equipo"
+        from apps.maintenance.models import Mantenimiento
+        return Mantenimiento.objects.filter(equipo=self)
 
     def __str__(self):
         return f"{self.marca} {self.modelo} - {self.numero_serie}"

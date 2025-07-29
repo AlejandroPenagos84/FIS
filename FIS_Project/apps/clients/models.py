@@ -15,5 +15,9 @@ class Sede(models.Model):
     name = models.CharField(max_length=100)
     address = models.TextField(blank=True, null=True)
 
+    def areas_servicio(self):
+        from apps.equipment.models import AreaServicio
+        return AreaServicio.objects.filter(sede=self)
+        
     def __str__(self):
         return self.name
