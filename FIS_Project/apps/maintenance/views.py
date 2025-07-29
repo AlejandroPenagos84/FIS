@@ -96,7 +96,24 @@ class OrdenTrabajoViewSet(ModelViewSet):
             return Response({'status': 'Orden asignada correctamente'})
         except User.DoesNotExist:
             return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
+    @action(detail=True, methods=['post'])
+    def iniciar(self, request, pk=None):
+        """Iniciar orden de trabajo"""
+        orden = self.get_object()
+        orden.iniciar()
+        return Response({'status': 'Orden iniciada'})
+    @action(detail=True, methods=['post'])
+    def completar(self, request, pk=None):
+        """Completar orden de trabajo"""
+        orden = self.get_object()
+        orden.completar()
+        return Response({'status': 'Orden completada'})
+    @action(detail=True, methods=['post'])
+    def cancelar(self, request, pk=None):
+        """Cancelar orden de trabajo"""
+        orden = self.get_object()
+        orden.cancelar()
+        return Response({'status': 'Orden cancelada'})
 
 class CotizacionViewSet(ModelViewSet):
     """
@@ -107,18 +124,18 @@ class CotizacionViewSet(ModelViewSet):
     permission_classes = [IsAdministradorOrIngeniero]
     
     @action(detail=True, methods=['post'])
-    def aprobar(self, request, pk=None):
-        """Aprobar cotización"""
+    def calcular_total(self, request, pk=None):
+        """Calcular total de la cotización"""
         cotizacion = self.get_object()
-        cotizacion.aprobar()
-        return Response({'status': 'Cotización aprobada'})
-    
+        total = cotizacion.calcular_total()
+        return Response({'total': total})
+
     @action(detail=True, methods=['post'])
-    def rechazar(self, request, pk=None):
-        """Rechazar cotización"""
+    def completar(self, request, pk=None):
+        """Completar cotización"""
         cotizacion = self.get_object()
-        cotizacion.rechazar()
-        return Response({'status': 'Cotización rechazada'})
+        cotizacion.completar()
+        return Response({'status': 'Cotización completa'})
 
 
 class ReporteServicioViewSet(ModelViewSet):
@@ -130,12 +147,19 @@ class ReporteServicioViewSet(ModelViewSet):
     permission_classes = [IsAdministradorOrIngeniero]
     
     @action(detail=True, methods=['post'])
-    def enviar(self, request, pk=None):
-        """Enviar reporte"""
+    def emitir(self, request, pk=None):
+        """Emitir reporte"""
         reporte = self.get_object()
-        reporte.enviar()
-        return Response({'status': 'Reporte enviado'})
-    
+        reporte.emitir()
+        return Response({'status': 'Reporte emitido'})
+
+    @action(detail=True, methods=['post'])
+    def revisar(self, request, pk=None):
+        """Revisar reporte"""
+        reporte = self.get_object()
+        reporte.revisar()
+        return Response({'status': 'Reporte revisado'})
+
     @action(detail=True, methods=['post'])
     def aprobar(self, request, pk=None):
         """Aprobar reporte"""

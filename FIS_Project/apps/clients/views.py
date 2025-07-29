@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -35,6 +36,7 @@ class ClientViewSet(ModelViewSet):
     #     serializer.is_valid(raise_exception=True)
     #     client = serializer.save()
     #     return Response(self.get_serializer(client).data, status=status.HTTP_201_CREATED)
+    
 
 
 class SedeViewSet(ModelViewSet):
@@ -53,6 +55,7 @@ class SedeViewSet(ModelViewSet):
             queryset = queryset.filter(name__icontains=search)
         return queryset
 
+    @action(detail=True, methods=['get'])
     def areas_servicio(self, request, pk=None):
         """
         Obtiene las áreas de servicio de una sede específica

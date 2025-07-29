@@ -45,12 +45,12 @@ class Equipo(models.Model):
 
     def marcar_mantenimiento(self):
         """Marca el equipo como en mantenimiento"""
-        self.estado = 'En_Mantenimiento'
+        self.estado = 'En Mantenimiento'
         self.save()
 
     def marcar_fuera_servicio(self):
         """Marca el equipo como fuera de servicio"""
-        self.estado = 'Fuera_de_Servicio'
+        self.estado = 'Fuera de Servicio'
         self.save()
 
     def marcar_activo(self):

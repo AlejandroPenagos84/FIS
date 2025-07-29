@@ -67,8 +67,8 @@ ESTRUCTURA: /{app}/{endpoint}/
        "username": "nuevo_usuario",
        "email": "email@example.com",
        "password": "contraseña",
-       "primer_nombre": "Nombre",
-       "primer_apellido": "Apellido",
+       "first_name": "Nombre",
+       "last_name": "Apellido",
        "rol": "Administrador|Ingeniero|Supervisor_Cliente"
    }
    Headers: Authorization: Bearer {token}
@@ -99,7 +99,7 @@ ESTRUCTURA: /{app}/{endpoint}/
 ===============================================================================
 
 9. LISTAR CLIENTES
-   URL: GET /clients/clients/
+   URL: GET /clients/clientes/
    Descripción: Lista todos los clientes
    Query Params:
    - search: Buscar por nombre o email
@@ -122,7 +122,7 @@ ESTRUCTURA: /{app}/{endpoint}/
         "email": "cliente@example.com",
         "phone": "1234567890",
         "address": "Dirección del cliente",
-        "sede": 1
+        "sede": id de la sede
     }
     Headers: Authorization: Bearer {token}
     Permisos: Administrador o Ingeniero
@@ -144,18 +144,6 @@ ESTRUCTURA: /{app}/{endpoint}/
     Descripción: Elimina un cliente del sistema
     Headers: Authorization: Bearer {token}
     Permisos: Administrador
-
-15. ESTADÍSTICAS DE CLIENTES
-    URL: GET /clients/clients/estadisticas/
-    Descripción: Obtiene estadísticas generales de clientes
-    Respuesta:
-    {
-        "total_clientes": 50,
-        "clientes_por_sede": [...],
-        "clientes_activos": 45
-    }
-    Headers: Authorization: Bearer {token}
-    Permisos: Administrador o Ingeniero
 
 ===============================================================================
 🏗️ GESTIÓN DE SEDES
@@ -198,6 +186,13 @@ ESTRUCTURA: /{app}/{endpoint}/
     Headers: Authorization: Bearer {token}
     Permisos: Administrador
 
+20. MOSTRAR AREAS DE SERVICIO ASOCIADAS A ESA SEDE
+    URL: GET /clients/sedes/{id}/areas_servicio/
+    Descripción: Obtiene las areas de servicio de una sede específica
+    Headers: Authorization: Bearer {token}
+    Permisos: Administrador o Ingeniero
+
+
 ===============================================================================
 ⚙️ GESTIÓN DE EQUIPOS
 ===============================================================================
@@ -216,7 +211,7 @@ ESTRUCTURA: /{app}/{endpoint}/
     Body (JSON):
     {
         "name": "Nombre del Área",
-        "sede": 1
+        "sede": id de la sede
     }
     Headers: Authorization: Bearer {token}
     Permisos: Administrador
@@ -287,12 +282,13 @@ ESTRUCTURA: /{app}/{endpoint}/
     Body (JSON):
     {
         "numero_serie": "EQ001",
+	"estado": "Funcional"|"En Mantenimiento"|"Fuera de Servicio"
         "marca": "HP",
         "modelo": "LaserJet Pro",
         "estado": "Funcional",
-        "tipo_equipo": 1,
-        "area_servicio": 1,
-        "cliente": 1
+        "tipo_equipo": id tipo de equipo,
+        "area_servicio": ide area de servicio,
+        "cliente": id cliente
     }
     Headers: Authorization: Bearer {token}
     Permisos: Administrador o Ingeniero
@@ -330,6 +326,15 @@ ESTRUCTURA: /{app}/{endpoint}/
     Permisos: Administrador o Ingeniero
 
 38. HISTORIAL DE MANTENIMIENTOS DEL EQUIPO
+    URL: GET /equipment/equipos/{id}/marcar_fuera_servicio/
+    Descripción: Cambia el estado del equipo a "Fuera de Servicio"
+    Body: {} (vacío)
+    Respuesta: {"status": "Equipo marcado como fuera de servicio"}
+    Headers: Authorization: Bearer {token}
+    Permisos: Administrador o Ingeniero
+
+
+39. HISTORIAL DE MANTENIMIENTOS DEL EQUIPO
     URL: GET /equipment/equipos/{id}/historial_mantenimientos/
     Descripción: Obtiene el historial completo de mantenimientos del equipo
     Headers: Authorization: Bearer {token}
@@ -368,11 +373,10 @@ ESTRUCTURA: /{app}/{endpoint}/
     Descripción: Crea un nuevo mantenimiento
     Body (JSON):
     {
-        "tipo": "Preventivo",
-        "fecha_programada": "2025-08-01T10:00:00Z",
-        "descripcion": "Mantenimiento preventivo mensual",
-        "equipo": 1,
-        "usuario": 1
+        "tipo": "Preventivo"|"Correctivo"|"Predictivo",
+	"estado": "Resgistrado"|"Programado"|"En Ejecucion"|"Completado"|"Cancelado"
+        "equipo": id equipo,
+        "usuario": id usuario asignado
     }
     Headers: Authorization: Bearer {token}
     Permisos: Administrador o Ingeniero
@@ -441,9 +445,12 @@ ESTRUCTURA: /{app}/{endpoint}/
     URL: POST /maintenance/ordenes-trabajo/
     Body (JSON):
     {
-        "mantenimiento": 1,
-        "usuario_asignado": 2,
-        "descripcion": "Descripción de la orden"
+	"estado": 'Generada' | 'Asignada' | 'En Curso' | 'Completada' | 'Cancelada',
+	"fecha_asignacion": fecha,
+	"descripcion_trabajo": "Descripción de la orden"
+        "mantenimiento": id del mantenimiento,
+        "usuario_asignado": id de usuario asignado a a orden, supongo que es el mismo que esta asociado al mantenimiento,
+        
     }
     Headers: Authorization: Bearer {token}
     Permisos: Administrador
@@ -473,10 +480,24 @@ ESTRUCTURA: /{app}/{endpoint}/
     Headers: Authorization: Bearer {token}
     Permisos: Administrador
 
+55. INICIAR ORDEN DE TRABAJO
+    URL: POST /maintenance/ordenes-trabajo/{id}/iniciar/
+    Body: {} (vacío)
+    Respuesta: {"status": "Orden iniciada"}
+    Headers: Authorization: Bearer {token}
+    Permisos: Administrador o Ingeniero
+
 55. COMPLETAR ORDEN DE TRABAJO
     URL: POST /maintenance/ordenes-trabajo/{id}/completar/
     Body: {} (vacío)
     Respuesta: {"status": "Orden completada"}
+    Headers: Authorization: Bearer {token}
+    Permisos: Administrador o Ingeniero
+
+55. CANCELAR ORDEN DE TRABAJO
+    URL: POST /maintenance/ordenes-trabajo/{id}/cancelar/
+    Body: {} (vacío)
+    Respuesta: {"status": "Orden cancelada"}
     Headers: Authorization: Bearer {token}
     Permisos: Administrador o Ingeniero
 
@@ -493,10 +514,11 @@ ESTRUCTURA: /{app}/{endpoint}/
     URL: POST /maintenance/cotizaciones/
     Body (JSON):
     {
-        "mantenimiento": 1,
-        "descripcion": "Cotización para mantenimiento",
-        "costo_mano_obra": "500.00",
-        "costo_materiales": "200.00"
+	"estado": "Generada" | "Completa" | "Incompleta",
+	"subtotal": valor,
+	"impuestos": valor,
+	"total": valor calculado por la funcion calcular_total,
+        "mantenimiento": id mantenimiento
     }
     Headers: Authorization: Bearer {token}
     Permisos: Administrador
@@ -520,6 +542,15 @@ ESTRUCTURA: /{app}/{endpoint}/
     URL: POST /maintenance/cotizaciones/{id}/calcular_total/
     Descripción: Recalcula el total de la cotización
     Body: {} (vacío)
+    Respuesta: {'total': total}
+    Headers: Authorization: Bearer {token}
+    Permisos: Administrador
+
+61. COMPLETAR COTIZACIÓN
+    URL: POST /maintenance/cotizaciones/{id}/completar/
+    Descripción: Cambia el estado a completa
+    Body: {} (vacío)
+    Respuesta: {'status': 'Cotización completada'}
     Headers: Authorization: Bearer {token}
     Permisos: Administrador
 
@@ -539,10 +570,11 @@ ESTRUCTURA: /{app}/{endpoint}/
     URL: POST /maintenance/reportes-servicio/
     Body (JSON):
     {
+	"Estado": 'No Emitido'|'Emitido'|'Revisado'|'Aprobado'|'No Aprobado'
+	"contenido": "Detalles del trabajo realizado...",
+	"fecha_emision": "fecha",
         "mantenimiento": 1,
-        "titulo": "Reporte de Mantenimiento",
-        "contenido": "Detalles del trabajo realizado...",
-        "observaciones": "Observaciones adicionales"
+        "creado_por": id del creador
     }
     Headers: Authorization: Bearer {token}
     Permisos: Administrador o Ingeniero
@@ -559,6 +591,14 @@ ESTRUCTURA: /{app}/{endpoint}/
 
 66. ELIMINAR REPORTE DE SERVICIO
     URL: DELETE /maintenance/reportes-servicio/{id}/
+    Headers: Authorization: Bearer {token}
+    Permisos: Administrador
+
+67. EMITIR REPORTE DE SERVICIO
+    URL: POST /maintenance/reportes-servicio/{id}/emitir/
+    Descripción: Cambia el estado a "Emitido"
+    Body: {} (vacío)
+    Respuesta: {"status": "Reporte aprobado"}
     Headers: Authorization: Bearer {token}
     Permisos: Administrador
 

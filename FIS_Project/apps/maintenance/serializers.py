@@ -62,6 +62,7 @@ class CotizacionSerializer(serializers.ModelSerializer):
 
 class ReporteServicioSerializer(serializers.ModelSerializer):
     mantenimiento_info = serializers.SerializerMethodField()
+    fecha_creacion = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     creado_por_name = serializers.CharField(source='creado_por.username', read_only=True)
     estado_display = serializers.CharField(source='get_estado_display', read_only=True)
     
