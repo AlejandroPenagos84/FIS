@@ -193,7 +193,11 @@ class ReporteServicio(models.Model):
         self.save()
 
     def __str__(self):
-        return f"Reporte {self.numero_reporte} - {self.mantenimiento.equipo}"
+        if self.mantenimiento and self.mantenimiento.equipo:
+            return f"Reporte {self.mantenimiento.equipo} - {self.get_estado_display()}"
+        # Si no hay mantenimiento asociado, retornar un mensaje genérico
+        if not self.mantenimiento:
+            return "Reporte sin mantenimiento asociado"
 
     class Meta:
         verbose_name = "Reporte de Servicio"
