@@ -23,7 +23,7 @@ function Login() {
 
   async function submitForm(data: LoginUserType) {
     await login(data);
-    navigate("/register");
+    navigate("/home");
   }
 
   useEffect(() => {

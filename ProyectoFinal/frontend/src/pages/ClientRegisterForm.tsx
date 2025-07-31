@@ -1,37 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
-import { type ClienteType, ClienteSchema } from "@/interfaces/Client";
+import { type ClientType, ClientSchema } from "@/interfaces/Client";
 import { Form } from "@/components/ui/form";
 import { InputWithLabel } from "@/components/ui/InputWithLabel";
 import { Button } from "@/components/ui/button";
 import { SelectWithLabel } from "@/components/ui/SelectWithLabel";
 import { DynamicInputList } from "@/components/ui/DynamicInputList";
+import { SiteForm } from "@/components/SiteForm/SiteForm";
 
 function ClienteForm() {
-    const form = useForm<ClienteType>({
+    const form = useForm<ClientType>({
         mode: "onBlur",
-        resolver: zodResolver(ClienteSchema),
+        resolver: zodResolver(ClientSchema),
         defaultValues: {
             type: "",
-            typeId: "",
             identification: "",
-            firmenname: "",
+            name: "",
             country: "",
-            phNumbers: [{ value: "" }], // Array de objetos con valor de teléfono
-            emailAddresses: [{ value: "" }], // Array de objetos con valor de email
+            phone:"",
+            email:"",
+            adress:""
         },
     });
 
-    const dataIDs = [
-        {
-            id: "1",
-            description: "Persona Natural",
-        },
-        {
-            id: "2",
-            description: "Persona Juridica",
-        },
-    ];
 
     const dataPeopleType = [
         {
@@ -48,19 +39,8 @@ function ClienteForm() {
         },
     ];
 
-    // Para teléfonos
-    const { fields: fieldsPh, append: appendPh, remove: removePh } = useFieldArray({
-    control: form.control,
-    name: "phNumbers"
-    });
 
-    // Para emails
-    const { fields: fieldsEmail, append: appendEmail, remove: removeEmail } = useFieldArray({
-    control: form.control,
-    name: "emailAddresses"
-    });
-
-    async function submitForm(data: ClienteType) {
+    async function submitForm(data: ClientType) {
         console.log("Pruebnaasda")
         console.log(data);
     }
@@ -79,12 +59,6 @@ function ClienteForm() {
                         nameInSchema="type"
                         className="mb-7"
                     />
-                    <SelectWithLabel
-                        data={dataIDs}
-                        fieldTittle="Type ID"
-                        nameInSchema="typeId"
-                        className="mb-7"
-                    />
 
                     <InputWithLabel
                         type="text"
@@ -95,7 +69,7 @@ function ClienteForm() {
                     <InputWithLabel
                         type="text"
                         fieldTittle="Razón Social (firmenname)"
-                        nameInSchema="firmenname"
+                        nameInSchema="name"
                         className="mb-7"
                     />
                     <InputWithLabel
@@ -104,21 +78,19 @@ function ClienteForm() {
                         nameInSchema="country"
                         className="mb-7"
                     />
+                    <InputWithLabel
+                        type="text"
+                        fieldTittle="Phone"
+                        nameInSchema="phone"
+                        className="mb-7"
+                    />
+                    <InputWithLabel
+                        type="text"
+                        fieldTittle="Email"
+                        nameInSchema="email"
+                        className="mb-7"
+                    />
 
-                    <DynamicInputList
-                        label="Teléfonos"
-                        name="phNumbers"
-                        fields={fieldsPh}
-                        append={appendPh}
-                        remove={removePh}
-                    />
-                    <DynamicInputList
-                        label="Emails"
-                        name="emailAddresses"
-                        fields={fieldsEmail}
-                        append={appendEmail}
-                        remove={removeEmail}
-                    />
                     <Button
                         type="submit"
                         className="hover:bg-primaryBlue mt-7 ease-in-out duration-500"
@@ -127,6 +99,7 @@ function ClienteForm() {
                     </Button>
                 </form>
             </Form>
+            <SiteForm/>
         </div>
     );
 }

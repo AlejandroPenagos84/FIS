@@ -17,9 +17,9 @@ class IsAdministradorOrIngeniero(BasePermission):
             print("Usuario no autenticado")
             return False
         
-        print(f"Rol del usuario: {request.user.rol}")
+        print(f"Rol del usuario: {request.user.role}")
         # Verificar que tenga el rol correcto
-        return request.user.rol in ['Administrador', 'Ingeniero']
+        return request.user.role in ['Administrador', 'Ingeniero']
 
 class IsAdministrador(BasePermission):
     """
@@ -30,7 +30,7 @@ class IsAdministrador(BasePermission):
         if not request.user or not request.user.is_authenticated:
             return False
         
-        return request.user.rol == 'Administrador'
+        return request.user.role == 'Administrador'
 
 class IsIngeniero(BasePermission):
     """
@@ -41,18 +41,7 @@ class IsIngeniero(BasePermission):
         if not request.user or not request.user.is_authenticated:
             return False
         
-        return request.user.rol == 'Ingeniero'
-
-class IsTecnico(BasePermission):
-    """
-    Permiso personalizado que permite acceso solo a técnicos
-    """
-    
-    def has_permission(self, request, view):
-        if not request.user or not request.user.is_authenticated:
-            return False
-
-        return request.user.rol == 'Tecnico'
+        return request.user.role == 'Ingeniero'
 
 class IsSupervisorCliente(BasePermission):
     """
@@ -63,4 +52,4 @@ class IsSupervisorCliente(BasePermission):
         if not request.user or not request.user.is_authenticated:
             return False
 
-        return request.user.rol == 'Supervisor_Cliente'
+        return request.user.role == 'Supervisor_Cliente'

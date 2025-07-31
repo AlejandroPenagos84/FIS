@@ -7,16 +7,16 @@ class User(AbstractUser):
         ('Administrador', 'Administrador'),
         ('Ingeniero', 'Ingeniero'),
         ('Supervisor_Cliente', 'Supervisor Cliente'),
-        ('Tecnico', 'Técnico'),
     ]
     
-    REQUIRED_FIELDS = ["email"]
+    REQUIRED_FIELDS = ["email","phone","rol"]
     
     # Campos del diagrama
+    identification = models.CharField(max_length=20, unique=True, blank=True, null=True)
     username = models.CharField(max_length=100, unique=True, blank=True, null=True)
     email = models.EmailField(unique=True)
-    rol = models.CharField(max_length=30, choices=ROL_CHOICES, default='tecnico')
-    
+    role = models.CharField(max_length=30, choices=ROL_CHOICES, default='tecnico')
+    phone = models.CharField(max_length=15, blank=True, null=True)
     # Mantener compatibilidad con campos de Django
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
