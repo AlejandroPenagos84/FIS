@@ -1,118 +1,119 @@
-// api/Client.ts
-
-import type { Client, ClientResponse, ClientType } from "@/interfaces/Client";
+import type { SiteType } from "@/interfaces/Site";
 
 const API = "http://127.0.0.1:8000/";
 
-export async function getClients(): Promise<ClientResponse[] | null> {
+export async function getSites(): Promise<SiteType[] | null> {
   try {
     const token = localStorage.getItem("accessToken");
+    console.log(token);
 
-    const response = await fetch(`${API}clients/clientes/`, {
+    const response = await fetch(`${API}clients/sedes/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
-      },
+      }
     });
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
 
-    const data: ClientResponse[] = await response.json();
+    const data: SiteType[] = await response.json();
     return data;
+
   } catch (error) {
-    console.error("Failed to fetch clients:", error);
+    console.error("Failed to fetch sites:", error);
     return null;
   }
 }
 
-export async function getClient(id: string): Promise<ClientResponse | null> {
+export async function getSiteById(id: string): Promise<SiteType | null> {
   try {
     const token = localStorage.getItem("accessToken");
 
-    const response = await fetch(`${API}clients/clientes/${id}/`, {
+    const response = await fetch(`${API}clients/sedes/${id}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
-      },
+      }
     });
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
 
-    const client: ClientResponse = await response.json();
-    return client;
+    const data: SiteType = await response.json();
+    return data;
+
   } catch (error) {
-    console.error("Failed to fetch client:", error);
+    console.error(`Failed to fetch site ${id}:`, error);
     return null;
   }
 }
 
-export async function postClient(data: Client): Promise<boolean> {
+export async function createSite(site: SiteType): Promise<SiteType | null> {
   try {
     const token = localStorage.getItem("accessToken");
 
-    const response = await fetch(`${API}clients/clientes/`, {
+    const response = await fetch(`${API}clients/sedes/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(site),
     });
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
 
-    const result = await response.json();
-    console.log(result);
-    return true;
+    const data: SiteType = await response.json();
+    return data;
+
   } catch (error) {
-    console.error("Failed to create client:", error);
-    return false;
+    console.error("Failed to create site:", error);
+    return null;
   }
 }
 
-export async function updateClient(id: string, data: Partial<Client>): Promise<Client | null> {
+export async function updateSite(id: string, site: SiteType): Promise<SiteType | null> {
   try {
     const token = localStorage.getItem("accessToken");
 
-    const response = await fetch(`${API}clients/clientes/${id}/`, {
+    const response = await fetch(`${API}clients/sedes/${id}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(site),
     });
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
 
-    const updated: Client = await response.json();
-    return updated;
+    const data: SiteType = await response.json();
+    return data;
+
   } catch (error) {
-    console.error("Failed to update client:", error);
+    console.error(`Failed to update site ${id}:`, error);
     return null;
   }
 }
 
-export async function deleteClient(id: string): Promise<boolean> {
+export async function deleteSite(id: string): Promise<boolean> {
   try {
     const token = localStorage.getItem("accessToken");
 
-    const response = await fetch(`${API}clients/clientes/${id}/`, {
+    const response = await fetch(`${API}clients/sedes/${id}/`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
-      },
+      }
     });
 
     if (!response.ok) {
@@ -120,8 +121,9 @@ export async function deleteClient(id: string): Promise<boolean> {
     }
 
     return true;
+
   } catch (error) {
-    console.error("Failed to delete client:", error);
+    console.error(`Failed to delete site ${id}:`, error);
     return false;
   }
 }

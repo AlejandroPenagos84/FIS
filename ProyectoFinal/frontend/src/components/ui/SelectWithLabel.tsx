@@ -41,32 +41,32 @@ export function SelectWithLabel<S>({
                         {fieldTittle}
                     </FormLabel>
 
-                <Select
-                {...field}
-                onValueChange={field.onChange}
-                >
-                <FormControl>
-                    <SelectTrigger
-                    id={nameInSchema}
-                    className={`w-full max-w-xs bg-white! text-black ${className ?? ""}`}
+                    <Select
+                        {...field}
+                        onValueChange={field.onChange}
                     >
-                    <SelectValue placeholder="Por favor, selecciona" />
-                    </SelectTrigger>
-                </FormControl>
+                        <FormControl>
+                            <SelectTrigger
+                                id={nameInSchema}
+                                className={`w-full max-w-xs bg-white! text-black ${className ?? ""}`}
+                            >
+                                <SelectValue placeholder="Por favor, selecciona" />
+                            </SelectTrigger>
+                        </FormControl>
 
-                <SelectContent className="bg-white text-black">
-                    {data.map(item => (
-                    <SelectItem
-                        key={`${nameInSchema}_${item.id}`}
-                        value={item.id}
-                        className="bg-white text-black data-[state=checked]:bg-gray-100"
-                    >
-                        {item.description}
-                    </SelectItem>
-                    ))}
-                </SelectContent>
-                </Select>
-                    <FormMessage/>
+                        <SelectContent className="bg-white text-black">
+                            {data.map(item => (
+                                <SelectItem
+                                    key={`${nameInSchema}_${item.id}`}
+                                    value={item.id}
+                                    className="bg-white text-black data-[state=checked]:bg-gray-100"
+                                >
+                                    {item.description}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
                 </FormItem>
             )}
         />

@@ -15,7 +15,6 @@ import type { User } from "@/interfaces/User";
 
 function UserRegisterForm() {
     const { userId } = useParams<{ userId: string }>();
-    console.log(userId)
     const [user, setUser] = useState<User | null>();
 
     const form = useForm<RegisterUserType>({

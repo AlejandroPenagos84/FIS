@@ -5,17 +5,16 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ClientType } from "@/interfaces/Client";
+import type { ClientResponse } from "@/interfaces/Client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 export function ClientsTable() {
-  const [clients, setClients] = useState<ClientType[]>([]);
+  const [clients, setClients] = useState<ClientResponse[]>([]);
   const navigate = useNavigate();
 
   const fetchClients = async () => {
@@ -33,7 +32,7 @@ export function ClientsTable() {
     fetchClients();
   }, []);
 
-  const selectClient = (clientId: string) => {
+  const selectClient = (clientId: number) => {
     navigate(`/clients/${clientId}`);
   };
 
@@ -60,11 +59,11 @@ export function ClientsTable() {
         <TableCaption>Clientes</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Id</TableHead>
-            <TableHead className="w-[100px]">Nombre</TableHead>
-            <TableHead>Apellido</TableHead>
-            <TableHead className="text-center">Correo</TableHead>
+            <TableHead>ID</TableHead>
+            <TableHead>Nombre</TableHead>
+            <TableHead>Email</TableHead>
             <TableHead className="text-center">Teléfono</TableHead>
+            <TableHead className="text-center">Sede</TableHead>
             <TableHead className="text-center">Seleccionar</TableHead>
             <TableHead className="text-center">Eliminar</TableHead>
           </TableRow>
@@ -75,12 +74,13 @@ export function ClientsTable() {
               <TableCell>{client.id}</TableCell>
               <TableCell>{client.name}</TableCell>
               <TableCell>{client.email}</TableCell>
-              <TableCell>{client.phone}</TableCell>
+              <TableCell>{client.phone ?? "N/A"}</TableCell>
+              <TableCell>{client.sede_name ?? "Sin sede"}</TableCell>
               <TableCell>
-                <Button onClick={() => selectClient(client.identification)}>Seleccionar</Button>
+                <Button onClick={() => selectClient(client.id)}>Seleccionar</Button>
               </TableCell>
               <TableCell>
-                <Button onClick={() => deleteCl(client.identification)}>X</Button>
+                <Button onClick={() => deleteCl(client.id.toString())}>X</Button>
               </TableCell>
             </TableRow>
           ))}
