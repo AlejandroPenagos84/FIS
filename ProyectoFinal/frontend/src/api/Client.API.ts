@@ -1,6 +1,6 @@
 // api/Client.ts
 
-import type { Client, ClientResponse, ClientType } from "@/interfaces/Client";
+import type { Client, ClientResponse } from "@/interfaces/Client";
 
 const API = "http://127.0.0.1:8000/";
 

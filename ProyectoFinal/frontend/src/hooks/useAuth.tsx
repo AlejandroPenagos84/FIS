@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { LoginUserType } from "@/interfaces/LoginUser";
-import { loginUser } from "@/api/Login";
+import { loginUser } from "@/api/Login.API";
 
 type AuthContextType = {
   user: string | null; // guardamos el token aquí

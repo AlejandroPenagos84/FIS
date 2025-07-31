@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getEquipments } from "@/api/Equipment";
+import { getEquipments } from "@/api/Equipment.API";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -33,11 +33,11 @@ export function EquipmentTable() {
   }, []);
 
   const handleSelect = (equipmentId: number) => {
-    navigate(`/equipment/${equipmentId}`);
+    navigate(`/equipments/${equipmentId}`);
   };
 
   const handleAdd = () => {
-    navigate(`/equipment/register`);
+    navigate(`/equipments/register`);
   };
 
   return (

@@ -6,14 +6,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { SiteSchema, type SiteType } from "@/interfaces/Site";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { InputWithLabel } from "../ui/InputWithLabel";
-import { createSite } from "@/api/Site.API";
+import { createServiceArea } from "@/api/ServiceArea.API";
+import { ServiceAreaSchema, type ServiceAreaType } from "@/interfaces/ServiceArea";
 
 type Props = {
   open: boolean;
@@ -21,63 +22,59 @@ type Props = {
   onClose?: () => void;
 };
 
-export function SiteForm({ open, setOpen, onClose }: Props) {
-
+export function ServiceAreaForm({ open, setOpen, onClose }: Props) {
   const handleDialogChange = (isOpen: boolean) => {
     setOpen(isOpen);
     if (!isOpen && onClose) {
-      onClose(); // Se cerró el diálogo, disparar fetch
+      onClose();
     }
   };
 
-  const form = useForm<SiteType>({
+  const form = useForm<ServiceAreaType>({
     mode: "onBlur",
-    resolver: zodResolver(SiteSchema),
+    resolver: zodResolver(ServiceAreaSchema),
     defaultValues: {
       name: "",
-      address: ""
+      sede: null,
     },
   });
 
-  async function submitForm(data: SiteType) {
-    await createSite(data);
+  async function submitForm(data: ServiceAreaType) {
+    await createServiceArea(data);
     setOpen(false);
   }
-
-
 
   return (
     <Form {...form}>
       <Dialog open={open} onOpenChange={handleDialogChange}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="text-white">Agregar Sede</Button>
+          <Button variant="outline" className="text-white">Agregar Área</Button>
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Agregar Sede</DialogTitle>
+            <DialogTitle>Agregar Área de Servicio</DialogTitle>
           </DialogHeader>
 
-          {/* Formulario va aquí */}
           <form onSubmit={form.handleSubmit(submitForm)} className="grid gap-4">
             <div className="grid gap-3">
               <InputWithLabel
                 type="text"
-                fieldTittle="Nombre Sede"
+                fieldTittle="Nombre del Área"
                 nameInSchema="name"
               />
             </div>
             <div className="grid gap-3">
               <InputWithLabel
-                type="text"
-                fieldTittle="Dirección"
-                nameInSchema="address"
+                type="number"
+                fieldTittle="ID de Sede"
+                nameInSchema="sede"
               />
             </div>
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline" className="text-white">Cancel</Button>
+                <Button variant="outline" className="text-white">Cancelar</Button>
               </DialogClose>
               <Button type="submit">Guardar</Button>
             </DialogFooter>
@@ -85,6 +82,5 @@ export function SiteForm({ open, setOpen, onClose }: Props) {
         </DialogContent>
       </Dialog>
     </Form>
-
-  )
+  );
 }

@@ -10,7 +10,7 @@ import {
 import { SelectWithLabel } from "@/components/ui/SelectWithLabel";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUser, postUser, updateUser } from "@/api/User";
+import { getUser, postUser, updateUser } from "@/api/User.API";
 import type { User } from "@/interfaces/User";
 
 function UserRegisterForm() {
@@ -28,7 +28,7 @@ function UserRegisterForm() {
             password: "",
             role: "",
             phone: "",
-            email:""
+            email: ""
         },
     });
 
@@ -59,12 +59,12 @@ function UserRegisterForm() {
                     // Rellenar formulario con los datos del usuario
                     form.reset({
                         identification: data.identification ?? "",
-                        first_name: data.first_name  ?? "",
-                        last_name: data.last_name  ?? "",
-                        username: data.username  ?? "",
-                        role: data.role  ?? "",
+                        first_name: data.first_name ?? "",
+                        last_name: data.last_name ?? "",
+                        username: data.username ?? "",
+                        role: data.role ?? "",
                         phone: data.phone ?? "",
-                        email: data.email  ?? ""
+                        email: data.email ?? ""
                     });
                 }
             } catch (error) {

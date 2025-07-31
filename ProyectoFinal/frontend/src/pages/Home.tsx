@@ -14,15 +14,16 @@ export function Home() {
             <p className="text-lg font-semibold mb-2">
                 Dirección: Cll 77C No. 100B - 46, Bogotá, Colombia
             </p>
-            <iframe 
-            width="360" 
-            height="640" 
-            src="https://www.youtube.com/embed/cyCJoX44p8U" 
-            title="YouTube video player" 
-            frameBorder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowFullScreen>
+            <iframe
+                width="360"
+                height="640"
+                  src="https://www.youtube.com/embed/cyCJoX44p8U?autoplay=1&mute=1&loop=1&playlist=cyCJoX44p8U" 
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen>
             </iframe>
+
             {/* Link a LinkedIn */}
             <a
                 href="https://co.linkedin.com/in/bolivar-bioingenieria-883669b8" // Cambia por tu URL real

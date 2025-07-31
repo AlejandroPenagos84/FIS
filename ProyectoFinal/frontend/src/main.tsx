@@ -13,6 +13,7 @@ import UserRegisterForm from "@/pages/User/UserRegisterForm";
 import { ClientsTable } from "./pages/Client/ClientsTable";
 import {Home} from "./pages/Home"
 import { EquipmentTable } from "./pages/Equipment/EquipmentTable";
+import EquipmentForm from "./pages/Equipment/EquipmentRegisterForm";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,8 @@ const router = createBrowserRouter([
           { path: "clients/:clientId", Component: ClienteForm},
           { path: "clients", Component: ClientsTable },
 
+          { path: "equipments/register", Component: EquipmentForm },
+          { path: "equipments/:equipmentId", Component: EquipmentForm },
           { path: "equipments", Component: EquipmentTable },
         ],
       },

@@ -13,8 +13,8 @@ import { SiteForm } from "@/components/SiteForm/SiteForm";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { SiteType } from "@/interfaces/Site";
-import { getSites } from "@/api/Site";
-import { postClient, getClient, updateClient } from "@/api/Client";
+import { getSites } from "@/api/Site.API";
+import { postClient, getClient, updateClient } from "@/api/Client.API";
 
 function ClienteForm() {
   const { clientId } = useParams<{ clientId: string }>();

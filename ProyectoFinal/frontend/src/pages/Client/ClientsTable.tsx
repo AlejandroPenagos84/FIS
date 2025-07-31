@@ -1,4 +1,4 @@
-import { getClients, deleteClient } from "@/api/Client";
+import { getClients, deleteClient } from "@/api/Client.API";
 import { Button } from "@/components/ui/button";
 import {
   Table,

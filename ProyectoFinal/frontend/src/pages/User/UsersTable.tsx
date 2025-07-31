@@ -1,4 +1,4 @@
-import { deleteUser, getUsers } from "@/api/User"
+import { deleteUser, getUsers } from "@/api/User.API"
 import { Button } from "@/components/ui/button";
 import {
   Table,

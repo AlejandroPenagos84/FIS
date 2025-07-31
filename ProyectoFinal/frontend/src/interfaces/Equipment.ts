@@ -15,3 +15,26 @@ export interface EquipmentResponse {
   area_servicio: number | null;
   cliente: number | null;
 }
+
+import { z } from "zod";
+
+export const EquipmentSchema = z.object({
+  numero_serie: z
+    .string()
+    .min(1, "El número de serie es obligatorio")
+    .max(100, "Máximo 100 caracteres"),
+  estado: z.string().min(1, "El estado es obligatorio"),
+  marca: z
+    .string()
+    .min(1, "La marca es obligatoria")
+    .max(100, "Máximo 100 caracteres"),
+  modelo: z
+    .string()
+    .min(1, "El modelo es obligatorio")
+    .max(100, "Máximo 100 caracteres"),
+  tipo_equipo: z.number().nullable(),
+  area_servicio: z.number().nullable(),
+  cliente: z.number().nullable(),
+});
+
+export type EquipmentRequestType = z.infer<typeof EquipmentSchema>;
