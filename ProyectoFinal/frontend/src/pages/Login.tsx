@@ -4,8 +4,14 @@ import { type LoginUserType, LoginUserSchema } from "@/interfaces/LoginUser";
 import { Form } from "@/components/ui/form";
 import { InputWithLabel } from "@/components/ui/InputWithLabel";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
 
 function Login() {
+  const navigate = useNavigate();
+  const { login, logout } = useAuth();
+
   const form = useForm<LoginUserType>({
     mode: "onBlur",
     resolver: zodResolver(LoginUserSchema),
@@ -16,12 +22,17 @@ function Login() {
   });
 
   async function submitForm(data: LoginUserType) {
-    console.log(data);
+    await login(data);
+    navigate("/register");
   }
 
+  useEffect(() => {
+    logout();
+  }, []);
+
   return (
-    <>
-      <div className="flex flex-col gap-1 sm:px-8 lg:shadow-2xl p-5 rounded bg-white">
+    <div className="w-screen h-screen flex items-center justify-center bg-gray-100">
+      <div className="flex flex-col gap-1 sm:px-8 lg:shadow-2xl p-5 rounded bg-white items-center justify-center">
         <div className="flex justify-center items-center">
           <h2 className="text-2xl font-bold mb-2">Login</h2>
         </div>
@@ -48,7 +59,7 @@ function Login() {
           </form>
         </Form>
       </div>
-    </>
+    </div>
   );
 }
 

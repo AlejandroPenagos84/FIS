@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css";
+import "./index.css";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ClienteForm from "./pages/ClientForm";
@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <ClienteForm />
+      <Login/>
     </>
   );
 }
