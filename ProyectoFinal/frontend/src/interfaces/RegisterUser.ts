@@ -1,24 +1,29 @@
-import {z} from "zod"
+import { z } from "zod";
 
 export interface RegisterUser {
+  identification: string;
   firstName: string;
-  secondName: string;
   firstLastName: string;
-  secondLastName: string;
   username: string;
   password: string;
   role: string;
 }
 
 export const RegisterUserSchema = z.object({
+  identification: z
+    .string()
+    .nonempty("La identificación es obligatoria")
+    .regex(/^\d+$/, "La identificación solo debe contener números"),
   firstName: z.string().nonempty("El primer nombre es obligatorio"),
-  secondName: z.string().optional(), // opcional si aplica
   firstLastName: z.string().nonempty("El primer apellido es obligatorio"),
-  secondLastName: z.string().optional(), // opcional si aplica
   username: z.string().nonempty("El nombre de usuario es obligatorio"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
   role: z.string().nonempty("El rol es obligatorio"),
 });
 
+type RegisterUserInput = Omit<RegisterUser, "identification"> & {
+  identification: string;
+};
 
-export type RegisterUserType = z.infer<typeof RegisterUserSchema>;
+// Tipo para el resultado validado (transformado)
+export type RegisterUserType = RegisterUserInput;

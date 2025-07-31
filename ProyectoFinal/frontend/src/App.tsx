@@ -1,16 +1,17 @@
-import { useState } from 'react'
-import './App.css'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import { useState } from "react";
+import "./App.css";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ClienteForm from "./pages/ClientForm";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
-      <Register/>
+      <ClienteForm />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
