@@ -18,12 +18,12 @@ import { postClient, getClient, updateClient } from "@/api/Client.API";
 
 function ClienteForm() {
   const { clientId } = useParams<{ clientId: string }>();
-  const [sites, setSites] = useState<SiteType[]>([]);
+  const [, setSites] = useState<SiteType[]>([]);
   const [selectSites, setSelectSites] = useState<
     { id: string; description: string }[]
   >([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [client, setClient] = useState<ClientType | null>(null);
+  const [, setClient] = useState<ClientType | null>(null);
 
   const form = useForm<ClientType>({
     mode: "onBlur",
@@ -36,7 +36,7 @@ function ClienteForm() {
       phone: "",
       email: "",
       address: "",
-      siteId: "",
+      sede: "",
     },
   });
 
@@ -87,7 +87,7 @@ function ClienteForm() {
   async function submitForm(data: ClientType) {
     const finalData = {
       ...data,
-      siteId: parseInt(data.siteId, 10),
+      sede: parseInt(data.sede, 10),
     };
 
     try {
@@ -150,7 +150,7 @@ function ClienteForm() {
           />
           <SelectWithLabel
             fieldTittle="Sede"
-            nameInSchema="siteId"
+            nameInSchema="sede"
             data={selectSites}
           />
           <div className="md:col-span-2 flex justify-end">

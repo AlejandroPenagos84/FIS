@@ -8,7 +8,7 @@ export interface Client{
   phone: string,
   email: string,
   address: string,
-  siteId: number
+  sede: number
 }
 
 export interface ClientResponse {
@@ -36,7 +36,7 @@ export const ClientSchema = z.object({
   phone: z.string().nonempty("El telefono es obligatorio"),
   email: z.string().nonempty("El email es obligatorio"),
   address: z.string().nonempty("La direccion es obligatoria"),
-  siteId: z.string().nonempty("Debe seleccionar una sede")
+  sede: z.string().nonempty("Debe seleccionar una sede")
   /*
    phNumbers: z
     .array(z.object({ value: z.string().nonempty("El teléfono no puede estar vacío") }))
@@ -59,6 +59,6 @@ export function mapClientResponseToClientType(response: ClientResponse): ClientT
     country: response.country ?? "",
     identification: response.identification ?? "",
     type: response.type,
-    siteId: response.sede?.toString() ?? "", // convertir sede (number) a siteId (string)
+    sede: response.sede !== null && response.sede !== undefined ? response.sede.toString() : ""
   };
 }

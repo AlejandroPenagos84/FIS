@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { SelectWithLabel } from "@/components/ui/SelectWithLabel";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { ServiceAreaForm } from "@/components/ServiceAreaForm/ServiceAreaForm";
 //import { getEquipment, postEquipment, updateEquipment } from "@/api/Equipment";
 //import { getTiposEquipo } from "@/api/TipoEquipo";
 //import { getAreasServicio } from "@/api/AreaServicio";
@@ -20,6 +21,7 @@ function EquipmentForm() {
   const [tiposEquipo, setTiposEquipo] = useState<{ id: number; description: string }[]>([]);
   const [areasServicio, setAreasServicio] = useState<{ id: number; description: string }[]>([]);
   const [clientes, setClientes] = useState<{ id: number; description: string }[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const form = useForm<EquipmentRequestType>({
     mode: "onBlur",
@@ -140,6 +142,11 @@ function EquipmentForm() {
           </div>
         </form>
       </Form>
+      <ServiceAreaForm
+        open={isDialogOpen}
+        setOpen={setIsDialogOpen}
+        onClose={() => {}}
+      />
     </div>
   );
 }

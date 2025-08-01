@@ -1,8 +1,13 @@
 import { z } from "zod";
 
+export interface ServiceAreaRequest {
+  name: string;
+  siteId: number; 
+}
+
 export const ServiceAreaSchema = z.object({
   name: z.string().min(1).max(100),
-  sede: z.number().nullable(),
+  sede: z.string().nonempty("El campo Sede es obligatorio"),
 });
 
 export type ServiceAreaType = z.infer<typeof ServiceAreaSchema>;
