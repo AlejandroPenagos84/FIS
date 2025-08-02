@@ -15,7 +15,7 @@ import type { User } from "@/interfaces/User";
 
 function UserRegisterForm() {
     const { userId } = useParams<{ userId: string }>();
-    const [user, setUser] = useState<User | null>();
+    const [, setUser] = useState<User | null>();
 
     const form = useForm<RegisterUserType>({
         mode: "onBlur",

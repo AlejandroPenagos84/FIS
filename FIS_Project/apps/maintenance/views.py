@@ -166,3 +166,4 @@ class ReporteServicioViewSet(ModelViewSet):
         reporte = self.get_object()
         reporte.aprobar()
         return Response({'status': 'Reporte aprobado'})
+    

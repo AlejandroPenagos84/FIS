@@ -7,11 +7,11 @@ class IsAdministradorOrIngeniero(BasePermission):
     
     def has_permission(self, request, view):
         # Verificar que el usuario esté autenticado
-        print("=== DEBUG PERMISSION ===")
-        print(f"Usuario: {request.user}")
-        print(f"Is authenticated: {request.user.is_authenticated}")
-        print(f"Headers: {request.headers}")
-        print(f"Auth header: {request.headers.get('Authorization', 'No Authorization header')}")
+        # print("=== DEBUG PERMISSION ===")
+        # print(f"Usuario: {request.user}")
+        # print(f"Is authenticated: {request.user.is_authenticated}")
+        # print(f"Headers: {request.headers}")
+        # print(f"Auth header: {request.headers.get('Authorization', 'No Authorization header')}")
         
         if not request.user or not request.user.is_authenticated:
             print("Usuario no autenticado")

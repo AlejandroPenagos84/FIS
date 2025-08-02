@@ -44,6 +44,7 @@ export function SelectWithLabel<S>({
                     <Select
                         {...field}
                         onValueChange={field.onChange}
+                        disabled={props.disabled} // props específicos que sí aplican
                     >
                         <FormControl>
                             <SelectTrigger
@@ -54,12 +55,12 @@ export function SelectWithLabel<S>({
                             </SelectTrigger>
                         </FormControl>
 
-                        <SelectContent className="bg-white text-black">
+                        <SelectContent className="bg-white text-black!">
                             {data.map(item => (
                                 <SelectItem
                                     key={`${nameInSchema}_${item.id}`}
                                     value={item.id}
-                                    className="bg-white text-black data-[state=checked]:bg-gray-100"
+                                    className="bg-white text-black! data-[state=checked]:bg-gray-100"
                                 >
                                     {item.description}
                                 </SelectItem>

@@ -7,6 +7,7 @@ from django.db.models import Q
 
 from .models import Client, Sede
 from .serializers import ClientSerializer, SedeSerializer
+from apps.equipment.serializers import AreaServicioSerializer
 from apps.users.permissions import IsAdministradorOrIngeniero, IsAdministrador
 
 # Create your views here.
@@ -19,24 +20,36 @@ class ClientViewSet(ModelViewSet):
     serializer_class = ClientSerializer
     permission_classes = [IsAdministradorOrIngeniero]
     
-    def get_queryset(self):
-        queryset = Client.objects.select_related('sede')
-        search = self.request.query_params.get('search', None)
+    @action(detail=True, methods=['get'])
+    def sedes(self, request, pk=None):
+        """
+        Obtiene las sedes de un cliente específico
+        """
+        client = self.get_object()
+        # print(f"Obteniendo sedes para el cliente: {client.name}")
+        sedes = client.sedes.all()
+        serializer = SedeSerializer(sedes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['get'])
+    def areas_servicio(self, request, pk=None):
+        """
+        Obtiene todas las áreas de servicio de todas las sedes de un cliente específico
+        Estructura: [{"sede": {...}, "areas_servicio": [...]}]
+        """
+        client = self.get_object()
+        result = []
         
-        if search:
-            queryset = queryset.filter(
-                Q(name__icontains=search) |
-                Q(email__icontains=search) |
-                Q(sede__name__icontains=search)
-            )
-        return queryset
-    
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     client = serializer.save()
-    #     return Response(self.get_serializer(client).data, status=status.HTTP_201_CREATED)
-    
+        for sede in client.sedes.all():
+            areas_servicio = sede.areas_servicio.all()
+            sede_data = {
+                'sede': SedeSerializer(sede).data,
+                'areas_servicio': AreaServicioSerializer(areas_servicio, many=True).data
+            }
+            result.append(sede_data)
+        
+        return Response(result, status=status.HTTP_200_OK)
+            
 
 
 class SedeViewSet(ModelViewSet):
@@ -47,13 +60,13 @@ class SedeViewSet(ModelViewSet):
     serializer_class = SedeSerializer
     permission_classes = [IsAdministradorOrIngeniero]
     
-    def get_queryset(self):
-        queryset = Sede.objects.prefetch_related('clients')
-        search = self.request.query_params.get('search', None)
+    # def get_queryset(self):
+    #     queryset = Sede.objects.prefetch_related('cliente')
+    #     search = self.request.query_params.get('search', None)
         
-        if search:
-            queryset = queryset.filter(name__icontains=search)
-        return queryset
+    #     if search:
+    #         queryset = queryset.filter(name__icontains=search)
+    #     return queryset
 
     @action(detail=True, methods=['get'])
     def areas_servicio(self, request, pk=None):
@@ -61,6 +74,7 @@ class SedeViewSet(ModelViewSet):
         Obtiene las áreas de servicio de una sede específica
         """
         sede = self.get_object()
-        areas_servicio = sede.areas_servicio()
+        print(f"Obteniendo áreas de servicio para la sede: {sede.name}")
+        areas_servicio = sede.areas_servicio.all()
         serializer = AreaServicioSerializer(areas_servicio, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

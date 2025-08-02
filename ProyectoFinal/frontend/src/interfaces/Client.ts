@@ -1,18 +1,7 @@
 import { z } from "zod";
 
-export interface Client{
-  type: string,
-  identification: string,
-  name: string,
-  country: string,
-  phone: string,
-  email: string,
-  address: string,
-  sede: number
-}
-
 export interface ClientResponse {
-  id: number; // readOnly
+  id: string; // readOnly
   sede_name: string; // readOnly
   type: string; // enum: e.g., "NIT", "Cédula"
   identification?: string | null; // nullable, maxLength: 20
@@ -36,7 +25,6 @@ export const ClientSchema = z.object({
   phone: z.string().nonempty("El telefono es obligatorio"),
   email: z.string().nonempty("El email es obligatorio"),
   address: z.string().nonempty("La direccion es obligatoria"),
-  sede: z.string().nonempty("Debe seleccionar una sede")
   /*
    phNumbers: z
     .array(z.object({ value: z.string().nonempty("El teléfono no puede estar vacío") }))
@@ -59,6 +47,5 @@ export function mapClientResponseToClientType(response: ClientResponse): ClientT
     country: response.country ?? "",
     identification: response.identification ?? "",
     type: response.type,
-    sede: response.sede !== null && response.sede !== undefined ? response.sede.toString() : ""
-  };
+  }
 }

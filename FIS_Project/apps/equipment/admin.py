@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import AreaServicio, TipoEquipo, Equipo
 
 class AreaServicioAdmin(admin.ModelAdmin):
-    list_display = ('id','name', 'sede')
+    list_display = ('name', 'sede')
     search_fields = ('name',)
 
 class TipoEquipoAdmin(admin.ModelAdmin):

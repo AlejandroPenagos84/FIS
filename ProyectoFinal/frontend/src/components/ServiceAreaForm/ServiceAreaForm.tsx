@@ -1,113 +1,49 @@
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useFormContext } from "react-hook-form";
 import { InputWithLabel } from "../ui/InputWithLabel";
-import { createServiceArea } from "@/api/ServiceArea.API";
-import { ServiceAreaSchema, type ServiceAreaType } from "@/interfaces/ServiceArea";
-import { getSites } from "@/api/Site.API";
-import { useEffect, useState } from "react";
-import type { SiteType } from "@/interfaces/Site";
-import { SelectWithLabel } from "../ui/SelectWithLabel";
+import { useEffect } from "react";
 
-type Props = {
-    open: boolean;
-    setOpen: (value: boolean) => void;
-    onClose?: () => void;
+type ServiceFormProps = {
+    namePrefix: string; // Ej: "sites.0"
+    nameSede: string;
+    sedeId: string;
 };
 
-export function ServiceAreaForm({ open, setOpen, onClose }: Props) {
-    const [selectSites, setSelectSites] = useState<{ id: string; description: string }[]>([]);
-    const [, setSites] = useState<SiteType[]>([]);
+export function ServiceAreaForm({ namePrefix, nameSede, sedeId }: ServiceFormProps) {
+    const { setValue } = useFormContext();
+    const { register } = useFormContext();
 
-    const handleDialogChange = (isOpen: boolean) => {
-        setOpen(isOpen);
-        if (!isOpen && onClose) {
-            onClose();
-        }
-    };
-
-    const form = useForm<ServiceAreaType>({
-        mode: "onBlur",
-        resolver: zodResolver(ServiceAreaSchema),
-        defaultValues: {
-            name: "",
-            sede: "",
-        },
-    });
-
-    async function submitForm(data: ServiceAreaType) {
-        await createServiceArea(data);
-        setOpen(false);
-    }
-
-    const fetchSites = async () => {
-        try {
-            const data = await getSites();
-            if (data) {
-                setSites(data);
-                const arraySelectSites = data.map((site) => ({
-                    id: site.id!.toString(),
-                    description: site.name,
-                }));
-                setSelectSites(arraySelectSites);
-            }
-        } catch (error) {
-            console.error("Error fetching sites:", error);
-        }
-    };
 
     useEffect(() => {
-        fetchSites();
-    }, []);
+        setValue(`${namePrefix}.sede`, sedeId);
+    }, [namePrefix, sedeId, setValue]);
 
     return (
-        <Form {...form}>
-            <Dialog open={open} onOpenChange={handleDialogChange}>
-                <DialogTrigger asChild>
-                    <Button variant="outline" className="text-white">Agregar Área</Button>
-                </DialogTrigger>
+        <>
+            <div className="grid gap-3">
+                <InputWithLabel<any>
+                    type="text"
+                    fieldTittle="Nombre Area Servicio"
+                    nameInSchema={`${namePrefix}.name`}
+                />
+            </div>
+            <div className="grid gap-3">
+                <div className="grid gap-1">
+                    <label className="text-sm font-medium">Nombre Sede</label>
+                    <input
+                        type="text"
+                        value={nameSede}
+                        placeholder="Sede Default"
+                        readOnly
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-100 text-gray-600"
+                    />
+                </div>
 
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Agregar Área de Servicio</DialogTitle>
-                    </DialogHeader>
-
-                    <form onSubmit={form.handleSubmit(submitForm)} className="grid gap-4">
-                        <div className="grid gap-3">
-                            <InputWithLabel
-                                type="text"
-                                fieldTittle="Nombre del Área"
-                                nameInSchema="name"
-                            />
-                        </div>
-                        <div className="grid gap-3">
-                            <SelectWithLabel
-                                fieldTittle="Sede"
-                                nameInSchema="sede"
-                                data={selectSites}
-                            />
-                        </div>
-
-                        <DialogFooter>
-                            <DialogClose asChild>
-                                <Button variant="outline" className="text-white">Cancelar</Button>
-                            </DialogClose>
-                            <Button type="submit">Guardar</Button>
-                        </DialogFooter>
-                    </form>
-                </DialogContent>
-            </Dialog>
-        </Form>
+                <input
+                    type="hidden"
+                    {...register(`${namePrefix}.sede`)} 
+                    value={sedeId} 
+                />
+            </div>
+        </>
     );
 }

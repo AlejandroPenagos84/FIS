@@ -1,5 +1,5 @@
 export interface EquipmentResponse {
-  id: number;
+  id: string;
   tipo_equipo_name: string;
   area_servicio_name: string;
   cliente_name: string;
@@ -32,9 +32,9 @@ export const EquipmentSchema = z.object({
     .string()
     .min(1, "El modelo es obligatorio")
     .max(100, "Máximo 100 caracteres"),
-  tipo_equipo: z.number().nullable(),
-  area_servicio: z.number().nullable(),
-  cliente: z.number().nullable(),
+  tipo_equipo: z.string().nullable(),
+  area_servicio: z.string().nullable(),
+  cliente: z.string().nullable(),
 });
 
 export type EquipmentRequestType = z.infer<typeof EquipmentSchema>;

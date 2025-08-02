@@ -9,20 +9,13 @@ import { Form } from "@/components/ui/form";
 import { InputWithLabel } from "@/components/ui/InputWithLabel";
 import { Button } from "@/components/ui/button";
 import { SelectWithLabel } from "@/components/ui/SelectWithLabel";
-import { SiteForm } from "@/components/SiteForm/SiteForm";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import type { SiteType } from "@/interfaces/Site";
-import { getSites } from "@/api/Site.API";
+import { useNavigate, useParams } from "react-router-dom";
 import { postClient, getClient, updateClient } from "@/api/Client.API";
 
 function ClienteForm() {
+  const navigate = useNavigate();
   const { clientId } = useParams<{ clientId: string }>();
-  const [, setSites] = useState<SiteType[]>([]);
-  const [selectSites, setSelectSites] = useState<
-    { id: string; description: string }[]
-  >([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [, setClient] = useState<ClientType | null>(null);
 
   const form = useForm<ClientType>({
@@ -35,8 +28,7 @@ function ClienteForm() {
       country: "",
       phone: "",
       email: "",
-      address: "",
-      sede: "",
+      address: ""
     },
   });
 
@@ -44,22 +36,6 @@ function ClienteForm() {
     { id: "Cedula", description: "Cédula" },
     { id: "Cedula Extranjeria", description: "Cédula de Extranjería" },
   ];
-
-  const fetchSites = async () => {
-    try {
-      const data = await getSites();
-      if (data) {
-        setSites(data);
-        const arraySelectSites = data.map((site) => ({
-          id: site.id!.toString(),
-          description: site.name,
-        }));
-        setSelectSites(arraySelectSites);
-      }
-    } catch (error) {
-      console.error("Error fetching sites:", error);
-    }
-  };
 
   const fetchClient = async () => {
     try {
@@ -76,9 +52,6 @@ function ClienteForm() {
     }
   };
 
-  useEffect(() => {
-    fetchSites();
-  }, [isDialogOpen]);
 
   useEffect(() => {
     fetchClient();
@@ -86,17 +59,19 @@ function ClienteForm() {
 
   async function submitForm(data: ClientType) {
     const finalData = {
-      ...data,
-      sede: parseInt(data.sede, 10),
+      ...data
     };
 
     try {
       if (clientId) {
         const updated = await updateClient(clientId, finalData);
         if (updated) alert("Cliente actualizado correctamente");
+        navigate(`/clients`);
+        
       } else {
         const created = await postClient(finalData);
         if (created) alert("Cliente agregado correctamente");
+        navigate(`/clients`);
       }
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
@@ -148,11 +123,7 @@ function ClienteForm() {
             fieldTittle="Dirección"
             nameInSchema="address"
           />
-          <SelectWithLabel
-            fieldTittle="Sede"
-            nameInSchema="sede"
-            data={selectSites}
-          />
+
           <div className="md:col-span-2 flex justify-end">
             <Button
               type="submit"
@@ -163,7 +134,13 @@ function ClienteForm() {
           </div>
         </form>
       </Form>
-      <SiteForm open={isDialogOpen} setOpen={setIsDialogOpen} onClose={fetchSites} />
+      {clientId && (
+        <Button
+          onClick={() => navigate(`/clients/modify/${clientId}/sites`)}
+        >
+          Agregar Sedes
+        </Button>
+      )}
     </div>
   );
 }

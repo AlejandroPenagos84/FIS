@@ -9,7 +9,7 @@ class User(AbstractUser):
         ('Supervisor_Cliente', 'Supervisor Cliente'),
     ]
     
-    REQUIRED_FIELDS = ["email","phone","rol"]
+    REQUIRED_FIELDS = ["email","phone","role"]
     
     # Campos del diagrama
     identification = models.CharField(max_length=20, unique=True, blank=True, null=True)
@@ -25,19 +25,19 @@ class User(AbstractUser):
 
     def es_administrador(self):
         """Verifica si el usuario es administrador"""
-        return self.rol == 'administrador'
+        return self.role == 'administrador'
 
     def es_ingeniero(self):
         """Verifica si el usuario es ingeniero"""
-        return self.rol == 'ingeniero'
+        return self.role == 'ingeniero'
 
     def es_supervisor_cliente(self):
         """Verifica si el usuario es supervisor de cliente"""
-        return self.rol == 'supervisor_cliente'
+        return self.role == 'supervisor_cliente'
 
     def es_tecnico(self):
         """Verifica si el usuario es técnico"""
-        return self.rol == 'tecnico'
+        return self.role == 'tecnico'
 
     def save(self, *args, **kwargs):
         # Si no se especifica username, usar el username

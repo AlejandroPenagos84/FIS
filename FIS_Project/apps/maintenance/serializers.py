@@ -3,10 +3,10 @@ from .models import Mantenimiento, OrdenTrabajo, Cotizacion, ReporteServicio
 
 
 class MantenimientoSerializer(serializers.ModelSerializer):
-    equipo_info = serializers.SerializerMethodField()
-    usuario_name = serializers.CharField(source='usuario.username', read_only=True)
-    tipo_display = serializers.CharField(source='get_tipo_display', read_only=True)
-    estado_display = serializers.CharField(source='get_estado_display', read_only=True)
+    # equipo_info = serializers.SerializerMethodField()
+    # usuario_name = serializers.CharField(source='usuario.username', read_only=True)
+    # tipo_display = serializers.CharField(source='get_tipo_display', read_only=True)
+    # estado_display = serializers.CharField(source='get_estado_display', read_only=True)
     
     class Meta:
         model = Mantenimiento
@@ -25,8 +25,8 @@ class MantenimientoSerializer(serializers.ModelSerializer):
 
 class OrdenTrabajoSerializer(serializers.ModelSerializer):
     mantenimiento_info = serializers.SerializerMethodField()
-    usuario_asignado_name = serializers.CharField(source='usuario_asignado.username', read_only=True)
-    estado_display = serializers.CharField(source='get_estado_display', read_only=True)
+    # usuario_asignado_name = serializers.CharField(source='usuario_asignado.username', read_only=True)
+    # estado_display = serializers.CharField(source='get_estado_display', read_only=True)
     
     class Meta:
         model = OrdenTrabajo

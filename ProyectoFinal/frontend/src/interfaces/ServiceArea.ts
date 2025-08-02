@@ -1,8 +1,12 @@
 import { z } from "zod";
 
-export interface ServiceAreaRequest {
-  name: string;
-  siteId: number; 
+
+export interface ServiceAreaResponse {
+    id: string,
+    sede_name: string,
+    "equipos_count": 0,
+    "name": "sdsa",
+    "sede": 10
 }
 
 export const ServiceAreaSchema = z.object({

@@ -8,8 +8,6 @@ export async function getUsers(): Promise<User[] | null> {
     try {
         
         const token = localStorage.getItem("accessToken");
-        console.log(token);
-
         const response = await fetch(`${API}users/users/`, {
             method: "GET",
             headers: {
@@ -34,7 +32,6 @@ export async function getUser(id: string): Promise<User | null> {
     try {
         
         const token = localStorage.getItem("accessToken");
-        console.log(token);
 
         const response = await fetch(`${API}users/users/${id}/`, {
             method: "GET",
@@ -131,3 +128,5 @@ export async function deleteUser(id: string): Promise<boolean> {
         return false;
     }
 }
+
+

@@ -7,7 +7,8 @@ from django.db.models import Q, Count
 
 from .models import AreaServicio, TipoEquipo, Equipo
 from .serializers import AreaServicioSerializer, TipoEquipoSerializer, EquipoSerializer
-from apps.users.permissions import IsAdministradorOrIngeniero, IsIngeniero
+from apps.maintenance.serializers import MantenimientoSerializer
+from apps.users.permissions import IsAdministradorOrIngeniero
 
 # Create your views here.
 
@@ -97,3 +98,10 @@ class EquipoViewSet(ModelViewSet):
             fuera_servicio=Count('id', filter=Q(estado='fuera_servicio'))
         )
         return Response(stats)
+    @action(detail=True, methods=['get'])
+    def historial_mantenimientos(self, request, pk=None):
+        """Obtener historial de mantenimientos de un equipo"""
+        equipo = self.get_object()
+        mantenimientos = equipo.mantenimientos.all()
+        serializer = MantenimientoSerializer(mantenimientos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

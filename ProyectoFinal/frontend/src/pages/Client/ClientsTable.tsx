@@ -32,10 +32,13 @@ export function ClientsTable() {
     fetchClients();
   }, []);
 
-  const selectClient = (clientId: number) => {
-    navigate(`/clients/${clientId}`);
+  const selectToModifyClient = (clientId: string) => {
+    navigate(`/clients/modify/${clientId}`);
   };
 
+  const selectClient = (clientId: string) => {
+    navigate(`/clients/views/${clientId}`);
+  };
   const addClient = () => {
     navigate(`/clients/register`);
   };
@@ -63,7 +66,7 @@ export function ClientsTable() {
             <TableHead>Nombre</TableHead>
             <TableHead>Email</TableHead>
             <TableHead className="text-center">Teléfono</TableHead>
-            <TableHead className="text-center">Sede</TableHead>
+            <TableHead className="text-center">Ver</TableHead>
             <TableHead className="text-center">Seleccionar</TableHead>
             <TableHead className="text-center">Eliminar</TableHead>
           </TableRow>
@@ -75,9 +78,11 @@ export function ClientsTable() {
               <TableCell>{client.name}</TableCell>
               <TableCell>{client.email}</TableCell>
               <TableCell>{client.phone ?? "N/A"}</TableCell>
-              <TableCell>{client.sede_name ?? "Sin sede"}</TableCell>
               <TableCell>
-                <Button onClick={() => selectClient(client.id)}>Seleccionar</Button>
+                <Button onClick={() => selectClient(client.id)}>Ver</Button>
+              </TableCell>
+              <TableCell>
+                <Button onClick={() => selectToModifyClient(client.id)}>Seleccionar</Button>
               </TableCell>
               <TableCell>
                 <Button onClick={() => deleteCl(client.id.toString())}>X</Button>

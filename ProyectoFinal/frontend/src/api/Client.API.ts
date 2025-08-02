@@ -1,6 +1,6 @@
 // api/Client.ts
 
-import type { Client, ClientResponse } from "@/interfaces/Client";
+import type {  ClientResponse, ClientType } from "@/interfaces/Client";
 
 const API = "http://127.0.0.1:8000/";
 
@@ -52,7 +52,7 @@ export async function getClient(id: string): Promise<ClientResponse | null> {
   }
 }
 
-export async function postClient(data: Client): Promise<boolean> {
+export async function postClient(data: ClientType): Promise<boolean> {
   try {
     const token = localStorage.getItem("accessToken");
 
@@ -78,7 +78,7 @@ export async function postClient(data: Client): Promise<boolean> {
   }
 }
 
-export async function updateClient(id: string, data: Partial<Client>): Promise<Client | null> {
+export async function updateClient(id: string, data: Partial<ClientType>): Promise<ClientType | null> {
   try {
     const token = localStorage.getItem("accessToken");
 
@@ -95,7 +95,7 @@ export async function updateClient(id: string, data: Partial<Client>): Promise<C
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
 
-    const updated: Client = await response.json();
+    const updated: ClientType = await response.json();
     return updated;
   } catch (error) {
     console.error("Failed to update client:", error);
@@ -125,3 +125,5 @@ export async function deleteClient(id: string): Promise<boolean> {
     return false;
   }
 }
+
+

@@ -32,8 +32,8 @@ export function EquipmentTable() {
     fetchEquipments();
   }, []);
 
-  const handleSelect = (equipmentId: number) => {
-    navigate(`/equipments/${equipmentId}`);
+  const handleSelect = (equipmentId: string) => {
+    navigate(`/equipments/views/${equipmentId}`);
   };
 
   const handleAdd = () => {
