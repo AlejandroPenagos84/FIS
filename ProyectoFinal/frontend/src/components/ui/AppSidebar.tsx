@@ -40,12 +40,12 @@ const items = [
   },
   {
     title: "Programacion Servicios",
-    url: "/maintenance",
+    url: "/workOrder",
     icon: CalendarPlus,
   },
   {
     title: "Gestion Cotizaciones",
-    url: "/workOrder",
+    url: "/quotes",
     icon: Wallet,
   },
   {
