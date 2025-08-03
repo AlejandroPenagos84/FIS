@@ -1,4 +1,4 @@
-import { getMaintenanceByEquipment } from "@/api/Maintenance.API";
+import { getMaintenancesByEquipment } from "@/api/Maintenance.API";
 import type { MaintenanceResponse } from "@/interfaces/Maintenance";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -23,7 +23,7 @@ export function MaintenanceEquipmentInfo() {
       setMaintenanceInfo(null);
       return;
     }
-    const maintenanceInfo = await getMaintenanceByEquipment(equipmentId);
+    const maintenanceInfo = await getMaintenancesByEquipment(equipmentId);
     setMaintenanceInfo(maintenanceInfo);
   };
 

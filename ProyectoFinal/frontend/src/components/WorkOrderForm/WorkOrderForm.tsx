@@ -6,10 +6,9 @@ import { SelectWithLabel } from "../ui/SelectWithLabel";
 import { Button } from "../ui/button";
 import { Form } from "@/components/ui/form";
 import { createWorkOrder } from "@/api/WorkOrder";
-import { getMantenimientos } from "@/api/Maintenance.API";
+import { getMaintenances } from "@/api/Maintenance.API";
 import { getUsers } from "@/api/User.API";
 import { useEffect, useState } from "react";
-import { Input } from "../ui/input";
 import { InputWithLabel } from "../ui/InputWithLabel";
 // import { DynamicServiceAreaForm } from "../ServiceAreaForm/DynamicServiceAreaForm";
 // import { useParams } from "react-router-dom";
@@ -54,7 +53,7 @@ export function WorkOrderForm() {
     ];
     const fetchMaintenances = async () => {
         try {
-            const maintenances = await getMantenimientos();
+            const maintenances = await getMaintenances();
             setSelectMaintenance((maintenances  ?? []).map((item) => ({ id: item.id, description: item.id })));
         } catch (error) {
             console.error("Error fetching type equipment:", error);

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   type EquipmentRequestType,
   EquipmentSchema,
@@ -7,21 +7,17 @@ import {
 import { Form } from "@/components/ui/form";
 import { InputWithLabel } from "@/components/ui/InputWithLabel";
 import { Button } from "@/components/ui/button";
-import { SelectWithLabel } from "@/components/ui/SelectWithLabel";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getTypeEquipments } from "@/api/TypeEquiment.API";
+import {  useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { createEquipment, getEquipment, updateEquipment } from "@/api/Equipment.API";
+import { EquipmentSelectForm } from "./EquipmentSelectForm";
 import { TypeEquipmentDialogForm } from "@/components/TypeEquipmentForm/TypeEquipmentForm";
-import { getClients } from "@/api/Client.API";
-import { getServiceAreasPerClient } from "@/api/ServiceArea.API"; // Asegúrate de tener esta API
-import { createEquipment } from "@/api/Equipment.API";
+import { SelectWithLabel } from "@/components/ui/SelectWithLabel";
 
 function EquipmentForm() {
   const { equipmentId } = useParams<{ equipmentId: string }>();
-  const [selectTypeEquipment, setSelectTypeEquipment] = useState<{ id: string; description: string }[]>([]);
-  const [selectServiceAreas, setSelectServiceAreas] = useState<{ id: string; description: string }[]>([]);
-  const [selectClients, setSelectClients] = useState<{ id: string; description: string }[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const form = useForm<EquipmentRequestType>({
     mode: "onBlur",
@@ -37,89 +33,52 @@ function EquipmentForm() {
     },
   });
 
-  const selectedClient = useWatch({
-    control: form.control,
-    name: "cliente",
-  });
-
-
   const equipmentStates = [
     { id: "Funcional", description: "Funcional" },
     { id: "En Mantenimiento", description: "En Mantenimiento" },
     { id: "Fuera de Servicio", description: "Fuera de Servicio" },
   ];
 
-  const fetchTypeEquipments = async () => {
-    try {
-      const typeEquipments = await getTypeEquipments();
-      setSelectTypeEquipment((typeEquipments ?? []).map((item) => ({
-        id: item.id,
-        description: item.name,
-      })));
-    } catch (error) {
-      console.error("Error fetching type equipment:", error);
-    }
-  };
-
-  const fetchClients = async () => {
-    try {
-      const clients = await getClients();
-      setSelectClients((clients ?? []).map((item) => ({
-        id: item.id,
-        description: item.name,
-      })));
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-    }
-  };
-
-  const fetchServiceAreas = async (clientId: string) => {
-    try {
-      const serviceAreas = await  getServiceAreasPerClient(clientId); // Asume que esta función acepta el ID del cliente
-      setSelectServiceAreas((serviceAreas ?? []).map((item) => ({
-        id: item.id,
-        description: item.name,
-      })));
-    } catch (error) {
-      console.error("Error fetching service areas:", error);
-    }
-  };
-
   async function submitForm(data: EquipmentRequestType) {
     try {
       if (equipmentId) {
-        
+        await updateEquipment(equipmentId, data);
         alert("Equipo actualizado correctamente");
       } else {
-        // Aquí deberías llamar a la API para crear un nuevo equipo
         await createEquipment(data);
         alert("Equipo agregado correctamente");
       }
+      navigate(`/equipments`);
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
     }
   }
 
   useEffect(() => {
-    fetchTypeEquipments();
-    fetchClients();
-  }, []);
+    const loadEquipment = async () => {
+      if (equipmentId) {
+        try {
+          const equipmentData = await getEquipment(equipmentId);
+          if (equipmentData) {
+            form.reset({
+              numero_serie: equipmentData.numero_serie,
+              estado: equipmentData.estado,
+              marca: equipmentData.marca,
+              modelo: equipmentData.modelo,
+              area_servicio: equipmentData.area_servicio !== null && equipmentData.area_servicio !== undefined ? String(equipmentData.area_servicio) : null,
+              tipo_equipo: equipmentData.tipo_equipo !== null && equipmentData.tipo_equipo !== undefined ? String(equipmentData.tipo_equipo) : null,
+              cliente: equipmentData.cliente !== null && equipmentData.cliente !== undefined ? String(equipmentData.cliente) : null,
+            });
+          }
+        } catch (error) {
+          console.error("Error al cargar los datos del equipo:", error);
+        }
+      }
+    };
 
-  useEffect(() => {
-    if (!isDialogOpen) {
-      fetchTypeEquipments();
-    }
-  }, [isDialogOpen]);
+    loadEquipment();
+  }, [equipmentId]);
 
-  useEffect(() => {
-    if (selectedClient) {
-      fetchServiceAreas(selectedClient);
-      console.log("Selected client:", selectedClient);
-      console.log(selectServiceAreas)
-    } else {
-      setSelectServiceAreas([]); 
-    }
-  }, [selectedClient]);
 
   return (
     <div className="flex flex-col gap-4 sm:px-8 py-6 lg:shadow-md rounded-xl bg-white max-w-4xl mx-auto">
@@ -127,13 +86,16 @@ function EquipmentForm() {
         {equipmentId ? "Editar Equipo" : "Registrar Equipo"}
       </h2>
       <Form {...form}>
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={form.handleSubmit(submitForm)}>
+        <form
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          onSubmit={form.handleSubmit(submitForm)}
+        >
           <InputWithLabel
             type="text"
             fieldTittle="Número de Serie"
             nameInSchema="numero_serie"
           />
-         <SelectWithLabel
+          <SelectWithLabel
             data={equipmentStates}
             fieldTittle="Estado"
             nameInSchema="estado"
@@ -149,28 +111,9 @@ function EquipmentForm() {
             fieldTittle="Modelo"
             nameInSchema="modelo"
           />
-          <SelectWithLabel
-            data={selectTypeEquipment}
-            fieldTittle="Tipo de Equipo"
-            nameInSchema="tipo_equipo"
-            className="mb-7"
-          />
-          {
-            selectedClient && (
-              <SelectWithLabel
-                data={selectServiceAreas}
-                fieldTittle="Área de Servicio"
-                nameInSchema="area_servicio"
-                className="mb-7"
-              />
-            )
-          }
-          <SelectWithLabel
-            data={selectClients}
-            fieldTittle="Cliente"
-            nameInSchema="cliente"
-            className="mb-7"
-          />
+          {!equipmentId && (
+            <EquipmentSelectForm isDialogOpen={isDialogOpen} />
+          )}
           <div className="md:col-span-2 flex justify-end">
             <Button
               type="submit"
@@ -181,11 +124,13 @@ function EquipmentForm() {
           </div>
         </form>
       </Form>
-      <TypeEquipmentDialogForm
-        open={isDialogOpen}
-        setOpen={setIsDialogOpen}
-        onClose={fetchTypeEquipments}
-      />
+      {!equipmentId && (
+        <TypeEquipmentDialogForm
+          open={isDialogOpen}
+          setOpen={setIsDialogOpen}
+          onClose={() => {}}
+        />
+      )}
     </div>
   );
 }

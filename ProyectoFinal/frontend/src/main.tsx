@@ -19,6 +19,7 @@ import { MaintenanceForm } from "./components/WorkOrderForm/MaintenanceForm";
 import { WorkOrderForm } from "./components/WorkOrderForm/WorkOrderForm";
 import { WorkOrder } from "./pages/WorkOrder/WorkOrder";
 import { MaintenanceEquipmentInfo } from "./components/EquipmentComponents/MaintenanceEquipmentInfo";
+import { MaintenancePage } from "./pages/Maintenance/MaintenancePage";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,8 @@ const router = createBrowserRouter([
           { path: "equipments/register/:equipmentId", Component: EquipmentForm },
           { path: "equipments/views/:equipmentId", Component: MaintenanceEquipmentInfo },
           { path: "equipments", Component: EquipmentTable },
+
+          {path: "services", Component: MaintenancePage },
 
           { path: "maintenance", Component: MaintenanceForm },
           { path: "workOrder", Component: WorkOrder },

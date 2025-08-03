@@ -82,8 +82,11 @@ export async function updateEquipment(
   equipmentData: EquipmentRequestType
 ): Promise<EquipmentResponse | null> {
   try {
-    const token = localStorage.getItem("accessToken");
 
+    const token = localStorage.getItem("accessToken");
+    console.log(equipmentData);
+
+    
     const response = await fetch(`${API}equipment/equipos/${id}/`, {
       method: "PUT",
       headers: {
@@ -98,6 +101,7 @@ export async function updateEquipment(
     }
 
     const updatedEquipment: EquipmentResponse = await response.json();
+    console.log(updateEquipment);
     return updatedEquipment;
   } catch (error) {
     console.error("Failed to update equipment:", error);

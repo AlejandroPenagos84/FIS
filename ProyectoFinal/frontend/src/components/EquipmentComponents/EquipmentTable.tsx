@@ -32,6 +32,10 @@ export function EquipmentTable() {
     fetchEquipments();
   }, []);
 
+  const handleSelectModify = (equipmentId: string) => {
+    navigate(`/equipments/register/${equipmentId}`);
+  }
+
   const handleSelect = (equipmentId: string) => {
     navigate(`/equipments/views/${equipmentId}`);
   };
@@ -74,8 +78,13 @@ export function EquipmentTable() {
               <TableCell>{eq.area_servicio_name}</TableCell>
               <TableCell>{eq.cliente_name}</TableCell>
               <TableCell className="text-center">
-                <Button onClick={() => handleSelect(eq.id)} variant="secondary">
+                <Button onClick={() => handleSelect(eq.id)} variant="secondary" className="text-white">
                   Ver
+                </Button>
+              </TableCell>
+              <TableCell className="text-center">
+                <Button onClick={() => handleSelectModify(eq.id)} variant="secondary" className="text-white">
+                  Modificar
                 </Button>
               </TableCell>
             </TableRow>
