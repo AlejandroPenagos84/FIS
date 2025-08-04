@@ -50,6 +50,24 @@ export const MaintenanceForm = forwardRef<MaintenanceFormRef, {}>((_, ref) => {
         }
     }), [form]);
 
+<<<<<<< HEAD
+=======
+    // Función removida ya que el submit se maneja desde el componente padre
+    // async function submitForm(data: MaintenanceRequestType) {
+    //     const finalData = {
+    //         ...data,
+    //     };
+
+    //     console.log("Final Data:", finalData);
+    //     const createdMaintenance = await createMaintenance(finalData);
+    //     if (createdMaintenance) {
+    //         alert("Mantenimiento creado exitosamente:");
+    //         form.reset();
+    //     }else {
+    //         alert("Error al crear el mantenimiento. Por favor, inténtelo de nuevo.");
+    //     }
+    // }
+>>>>>>> c69404acba04ec7b32cd59e721c6a3700ddda1a1
     
     const maintenanceType = [
     { id: "Preventivo", description: "Preventivo" },
@@ -113,9 +131,25 @@ export const MaintenanceForm = forwardRef<MaintenanceFormRef, {}>((_, ref) => {
                     nameInSchema="usuario"
                     className="mb-7"
                 />
+<<<<<<< HEAD
+=======
+
+                {/* <div className="flex justify-end mt-4 gap-2">
+                    <Button type="button" onClick={() => form.reset()}>
+                        Cancelar
+                    </Button>
+                    <Button type="submit">
+                        Guardar
+                    </Button>
+                </div> */}
+>>>>>>> c69404acba04ec7b32cd59e721c6a3700ddda1a1
             </div>
         </Form>
     );
 });
 
+<<<<<<< HEAD
 MaintenanceForm.displayName = "MaintenanceForm";
+=======
+MaintenanceForm.displayName = "MaintenanceForm";
+>>>>>>> c69404acba04ec7b32cd59e721c6a3700ddda1a1

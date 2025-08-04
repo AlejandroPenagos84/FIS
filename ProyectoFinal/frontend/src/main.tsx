@@ -15,7 +15,7 @@ import { EquipmentTable } from "./components/EquipmentComponents/EquipmentTable"
 import EquipmentForm from "./components/EquipmentComponents/EquipmentRegisterForm";
 import { SiteAndServiceAreaForm } from "./components/SiteForm/SiteAndServiceAreaForm";
 import { ClientInformation } from "./pages/Client/ClientInformation";
-import { MaintenanceForm } from "./components/WorkOrderForm/MaintenanceForm";
+//import { MaintenanceForm } from "./components/WorkOrderForm/MaintenanceForm";
 import { WorkOrder } from "./pages/WorkOrder/WorkOrder";
 import { MaintenanceEquipmentInfo } from "./components/EquipmentComponents/MaintenanceEquipmentInfo";
 import { MaintenancePage } from "./pages/Maintenance/MaintenancePage";
@@ -57,7 +57,6 @@ const router = createBrowserRouter([
 
           {path: "quotes", Component: QuotationPage },
 
-          {path: "serviceReport", Component: ServiceReportPage },
         ],
       },
     ],

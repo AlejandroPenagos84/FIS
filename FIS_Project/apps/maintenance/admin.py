@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Mantenimiento, OrdenTrabajo, Cotizacion, ReporteServicio
 # Register your models here.
 class MantenimientoAdmin(admin.ModelAdmin):
-    list_display = ('equipo','estado', 'usuario')
+    list_display = ('equipo','estado', 'tipo', 'usuario')
     search_fields = ('equipo__nombre', 'estado')
 
 class OrdenTrabajoAdmin(admin.ModelAdmin):

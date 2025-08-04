@@ -3,7 +3,7 @@ from .models import Mantenimiento, OrdenTrabajo, Cotizacion, ReporteServicio
 
 
 class MantenimientoSerializer(serializers.ModelSerializer):
-    # equipo_info = serializers.SerializerMethodField()
+    equipo_info = serializers.SerializerMethodField()
     # usuario_name = serializers.CharField(source='usuario.username', read_only=True)
     # tipo_display = serializers.CharField(source='get_tipo_display', read_only=True)
     # estado_display = serializers.CharField(source='get_estado_display', read_only=True)
@@ -14,6 +14,7 @@ class MantenimientoSerializer(serializers.ModelSerializer):
         
     def get_equipo_info(self, obj):
         if obj.equipo:
+            # return obj.equipo.id + ' - ' + obj.equipo.numero_serie + ' - ' + obj.equipo.marca + ' - ' + obj.equipo.modelo
             return {
                 'id': obj.equipo.id,
                 'numero_serie': obj.equipo.numero_serie,
