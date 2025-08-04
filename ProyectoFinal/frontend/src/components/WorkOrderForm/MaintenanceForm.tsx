@@ -1,19 +1,19 @@
-// import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaintenanceSchema, type MaintenanceRequestType } from "@/interfaces/Maintenance";
 import { SelectWithLabel } from "../ui/SelectWithLabel";
-import { Button } from "../ui/button";
 import { Form } from "@/components/ui/form";
-import { createMaintenance } from "@/api/Maintenance.API";
 import { getEquipments } from "@/api/Equipment.API";
 import { getUsers } from "@/api/User.API";
-import { useEffect, useState } from "react";
-// import { DynamicServiceAreaForm } from "../ServiceAreaForm/DynamicServiceAreaForm";
-// import { useParams } from "react-router-dom";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
-export function MaintenanceForm() {
-    // const { userId } = useParams<{ usertId: string }>();
+// Definir el tipo para la referencia
+interface MaintenanceFormRef {
+    getFormData: () => Promise<MaintenanceRequestType | null>;
+    resetForm: () => void;
+}
+
+export const MaintenanceForm = forwardRef<MaintenanceFormRef, {}>((_, ref) => {
     const [selectEquipment, setSelectEquipment] = useState<{ id: string; description: string }[]>([]);
     const [selectUser, setSelectUser] = useState<{ id: string; description: string }[]>([]);
 
@@ -28,20 +28,29 @@ export function MaintenanceForm() {
         },
     });
 
-    async function submitForm(data: MaintenanceRequestType) {
-        const finalData = {
-            ...data,
-        };
-
-        console.log("Final Data:", finalData);
-        const createdMaintenance = await createMaintenance(finalData);
-        if (createdMaintenance) {
-            alert("Mantenimiento creado exitosamente:");
+    useImperativeHandle(ref, () => ({
+        getFormData: async () => {
+            console.log("MaintenanceForm - getFormData called");
+            const formData = form.getValues();
+            console.log("MaintenanceForm - Form data:", formData);
+            
+            const isValid = await form.trigger();
+            console.log("MaintenanceForm - Validation result:", isValid);
+            
+            if (!isValid) {
+                const errors = form.formState.errors;
+                console.log("MaintenanceForm - Validation errors:", errors);
+                return null;
+            }
+            return formData;
+        },
+        resetForm: () => {
+            console.log("MaintenanceForm - resetForm called");
             form.reset();
-        }else {
-            alert("Error al crear el mantenimiento. Por favor, inténtelo de nuevo.");
         }
-    }
+    }), [form]);
+
+    
     const maintenanceType = [
     { id: "Preventivo", description: "Preventivo" },
     { id: "Correctivo", description: "Correctivo" },
@@ -57,7 +66,7 @@ export function MaintenanceForm() {
     const fetchEquipment = async () => {
         try {
             const equipments = await getEquipments();
-            setSelectEquipment((equipments  ?? []).map((item) => ({ id: item.id, description: item.marca + item.modelo +item.numero_serie })));
+            setSelectEquipment((equipments  ?? []).map((item) => ({ id: item.id, description: item.numero_serie+"-"+item.marca +"-"+ item.modelo})));
         } catch (error) {
             console.error("Error fetching type equipment:", error);
         }
@@ -78,11 +87,8 @@ export function MaintenanceForm() {
     
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(submitForm)}
-                className="grid gap-4 max-w-md p-4 border rounded-lg"
-            >
-                <h2 className="text-lg font-semibold mb-2">Agregar Mantenimiento</h2>
+            <div className="grid gap-4 max-w-md p-4 border rounded-lg">
+                <h2 className="text-lg font-semibold mb-2">Informacion del Mantenimiento</h2>
 
                 <SelectWithLabel
                     data={maintenanceType}
@@ -107,16 +113,9 @@ export function MaintenanceForm() {
                     nameInSchema="usuario"
                     className="mb-7"
                 />
-
-                <div className="flex justify-end mt-4 gap-2">
-                    <Button type="button" onClick={() => form.reset()}>
-                        Cancelar
-                    </Button>
-                    <Button type="submit">
-                        Guardar
-                    </Button>
-                </div>
-            </form>
+            </div>
         </Form>
     );
-}
+});
+
+MaintenanceForm.displayName = "MaintenanceForm";

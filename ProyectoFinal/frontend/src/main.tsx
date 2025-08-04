@@ -16,10 +16,11 @@ import EquipmentForm from "./components/EquipmentComponents/EquipmentRegisterFor
 import { SiteAndServiceAreaForm } from "./components/SiteForm/SiteAndServiceAreaForm";
 import { ClientInformation } from "./pages/Client/ClientInformation";
 import { MaintenanceForm } from "./components/WorkOrderForm/MaintenanceForm";
-import { WorkOrderForm } from "./components/WorkOrderForm/WorkOrderForm";
 import { WorkOrder } from "./pages/WorkOrder/WorkOrder";
 import { MaintenanceEquipmentInfo } from "./components/EquipmentComponents/MaintenanceEquipmentInfo";
 import { MaintenancePage } from "./pages/Maintenance/MaintenancePage";
+import { QuotationPage } from "./pages/Quotation/QuotationPage";
+import { ServiceReportPage } from "./pages/ServiceReport/ServiceReportPage";
 
 const router = createBrowserRouter([
   {
@@ -52,8 +53,11 @@ const router = createBrowserRouter([
 
           {path: "services", Component: MaintenancePage },
 
-          { path: "maintenance", Component: MaintenanceForm },
           { path: "workOrder", Component: WorkOrder },
+
+          {path: "quotes", Component: QuotationPage },
+
+          {path: "serviceReport", Component: ServiceReportPage },
         ],
       },
     ],

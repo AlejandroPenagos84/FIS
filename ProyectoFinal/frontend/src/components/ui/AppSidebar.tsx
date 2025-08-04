@@ -1,4 +1,4 @@
-import { CalendarPlus, Home, LogOut, Computer, ClipboardClock, UserRoundCog, UsersRound, Wallet} from "lucide-react"
+import { CalendarPlus, Home, LogOut, Computer, ClipboardClock, UserRoundCog, UsersRound, Wallet, Book} from "lucide-react"
 
 import {
   Sidebar,
@@ -40,13 +40,18 @@ const items = [
   },
   {
     title: "Programacion Servicios",
-    url: "/maintenance",
+    url: "/workOrder",
     icon: CalendarPlus,
   },
   {
     title: "Gestion Cotizaciones",
-    url: "/workOrder",
+    url: "/quotes",
     icon: Wallet,
+  },
+    {
+    title: "Gestión Reportes De Servicio",
+    url: "/serviceReport",
+    icon: Book,
   },
   {
     title: "Cerrar Sesion",

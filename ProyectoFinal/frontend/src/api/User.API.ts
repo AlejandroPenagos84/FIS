@@ -41,7 +41,6 @@ export async function getUser(id: string): Promise<User | null> {
             }
         });
 
-        console.log(response);
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }

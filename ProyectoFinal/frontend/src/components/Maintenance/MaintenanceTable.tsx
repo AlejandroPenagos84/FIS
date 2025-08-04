@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import { getUser } from "@/api/User.API";
 
 type MaintenanceTableProps = {
-    maintenanceInfo: MaintenanceResponse[];
+  maintenanceInfo: MaintenanceResponse[];
+  children?: (maintenanceId: string) => React.ReactNode;
 };
 
-export function MaintenanceTable({ maintenanceInfo }: MaintenanceTableProps) {
+export function MaintenanceTable({ maintenanceInfo, children }: MaintenanceTableProps) {
     const [users, setUsers] = useState<Record<string, string>>({});
 
     const fetchUsers = async () => {
@@ -44,18 +45,21 @@ export function MaintenanceTable({ maintenanceInfo }: MaintenanceTableProps) {
                     <TableHead>Tipo</TableHead>
                     <TableHead>Usuario</TableHead>
                     <TableHead>Estado</TableHead>
+                    {children && <TableHead>Acciones</TableHead>}
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {maintenanceInfo &&
-                    maintenanceInfo.map((maintenance) => (
-                        <TableRow key={maintenance.id}>
-                            <TableCell>{maintenance.id}</TableCell>
-                            <TableCell>{maintenance.tipo}</TableCell>
-                            <TableCell>{users?.[maintenance.id] || "Desconocido"}</TableCell>
-                            <TableCell>{maintenance.estado}</TableCell>
-                        </TableRow>
-                    ))}
+                {maintenanceInfo.map((maintenance) => (
+                    <TableRow key={maintenance.id}>
+                        <TableCell>{maintenance.id}</TableCell>
+                        <TableCell>{maintenance.tipo}</TableCell>
+                        <TableCell>{users?.[maintenance.id] || "Desconocido"}</TableCell>
+                        <TableCell>{maintenance.estado}</TableCell>
+                        {children && (
+                            <TableCell>{children(maintenance.id)}</TableCell>
+                        )}
+                    </TableRow>
+                ))}
             </TableBody>
         </Table>
     );

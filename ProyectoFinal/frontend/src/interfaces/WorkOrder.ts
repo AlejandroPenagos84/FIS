@@ -15,11 +15,11 @@ export interface WorkOrderResponse {
 import { z } from "zod";
 
 export const WorkOrderSchema = z.object({
-    estado: z.string(),
+    estado: z.string().min(1, "El estado es obligatorio"),
     fecha_asignacion: z.date().optional(),
-    descripcion_trabajo: z.string(),
-    mantenimiento: z.string().nullable(),
-    usuario_asignado: z.string().nullable(),
+    descripcion_trabajo: z.string().min(1, "La descripción del trabajo es obligatoria"),
+    mantenimiento: z.union([z.string(), z.number()]).nullable().optional(),
+    usuario_asignado: z.union([z.string(), z.number()]).nullable(),
 });
 
 export type WorkOrderRequestType = z.infer<typeof WorkOrderSchema>;

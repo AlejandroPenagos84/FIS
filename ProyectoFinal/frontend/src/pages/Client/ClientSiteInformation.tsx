@@ -12,7 +12,6 @@ export function ClientSiteInformation({ site }: Props) {
     const [serviceAreas, setServiceAreas] = useState<ServiceAreaResponse[]>([]);
 
     const fetchServiceAreas = async () => {
-        // Assuming you have a function to fetch service areas for the site
         if (site && site.id) {
             const areas = await getServiceAreasBySite(site.id);
             setServiceAreas(areas || []);
